@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>付款指引 · xujingyao.work</title>
+    <style>
+        /* 全局重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            max-width: 560px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 40px 36px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        /* 装饰小标签 */
+        .badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4a6cf7;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0b1a33;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .subhead {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        /* 付款信息描述 */
+        .info-grid {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 28px;
+            border-left: 4px solid #4a6cf7;
+        }
+
+        .info-grid p {
+            font-size: 14px;
+            color: #1e293b;
+            line-height: 1.8;
+        }
+
+        .info-grid strong {
+            color: #0b1a33;
+            font-weight: 600;
+        }
+
+        .highlight {
+            background: #fef9e7;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+            color: #b45309;
+        }
+
+        /* 二维码区域 */
+        .qr-section {
+            text-align: center;
+            margin: 28px 0 30px 0;
+        }
+
+        .qr-box {
+            background: #ffffff;
+            border: 2px dashed #dce2ef;
+            border-radius: 20px;
+            padding: 24px 24px 18px 24px;
+            transition: border 0.2s;
+            display: inline-block;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .qr-box:hover {
+            border-color: #4a6cf7;
+        }
+
+        .qr-placeholder {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #f1f4f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        /* 注意：这里放你的真实二维码图片 */
+        .qr-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .qr-label {
+            font-size: 13px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        /* 下载按钮 */
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #0b1a33;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(11, 26, 51, 0.15);
+        }
+
+        .btn-download:hover {
+            background: #1e2f4a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(11, 26, 51, 0.20);
+        }
+
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #0b1a33;
+            box-shadow: none;
+            border: 1px solid #dce2ef;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f4f9;
+            box-shadow: none;
+        }
+
+        .footer-note {
+            margin-top: 28px;
+            font-size: 13px;
+            color: #94a3b8;
+            text-align: center;
+            border-top: 1px solid #edf2f7;
+            padding-top: 22px;
+            line-height: 1.6;
+        }
+
+        .footer-note span {
+            background: #f1f5f9;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        /* 移动端调整 */
+        @media (max-width: 500px) {
+            .card {
+                padding: 28px 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .qr-box {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- 小标签 -->
+    <div class="badge">🔹 官方付款通道</div>
+
+    <!-- 标题 -->
+    <h1>💳 付款指引</h1>
+    <div class="subhead">
+        请使用 <strong>微信</strong> 或 <strong>支付宝</strong> 扫描下方二维码完成付款。<br>
+        付款后无需额外登记，我将在到账后与您确认。
+    </div>
+
+    <!-- 详细说明（防错） -->
+    <div class="info-grid">
+        <p>
+            <strong>📌 付款注意事项</strong><br>
+            · 付款时请务必备注 <span class="highlight">「公司+姓名」</span>，以便核对<br>
+            · 金额以双方确认的 <strong>对账单</strong> 为准<br>
+            · 如有疑问，请先联系财务确认，避免重复付款
+        </p >
+    </div>
+
+    <!-- 收款码展示 + 下载 -->
+    <div class="qr-section">
+        <div class="qr-box">
+            <!-- 这里是你的收款码图片，替换 src 即可 -->
+            <div class="qr-placeholder">
+                < img src="你的收款码图片链接.jpg" alt="收款码" style="width:100%; height:100%; object-fit:contain; border-radius:12px;">
+            </div>
+            <div class="qr-label">👆 微信 / 支付宝 通用收款码</div>
+        </div>
+    </div>
+
+    <!-- 两个按钮：下载码 + 复制备用 -->
+    <a href=" " download="收款码_xujingyao.jpg" class="btn-download">
+        ⬇️ 下载收款码（保存到相册）
+    </a >
+
+    <button class="btn-download btn-secondary" onclick="window.location.href='mailto:你的邮箱@example.com?subject=付款确认-请附截图'">
+        📧 付款后发送确认邮件
+    </button>
+
+    <div class="footer-note">
+        <span>🔒 本页面仅用于展示收款码</span><br>
+        所有付款以实际到账为准 · xujingyao.work
+    </div>
+</div>
+
+<!-- 简单交互提醒 -->
+<script>
+    // 如果用户点击邮件按钮，给个友好提示
+    document.querySelector('.btn-secondary')?.addEventListener('click', function(e) {
+        // 不阻止默认行为，只是额外提醒
+        setTimeout(() => {
+            alert('💡 请将付款截图作为附件发送，方便我快速核对。');
+        }, 300);
+    });
+</script>
+
+</body>
+</html>
