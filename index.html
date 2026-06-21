@@ -1,134 +1,184 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>通知内容</title>
-    <style>
-        /* 🌿 整体风格 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通知公告</title>
 
-        body {
-            font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(145deg, #f7f0fc 0%, #e9def5 100%);
-            padding: 20px;
-        }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        .card {
-            max-width: 600px;
-            width: 100%;
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 40px;
-            padding: 40px 36px;
-            box-shadow: 0 20px 60px rgba(90, 50, 120, 0.15);
-            border: 1px solid rgba(255,255,255,0.4);
-            transition: all 0.2s ease;
-        }
+    :root {
+        --primary: #6c4b8b;
+        --primary-light: #f5f0fa;
+        --text-main: #2d2d2d;
+        --text-sub: #666;
+        --border: #e6dcef;
+        --bg: #f7f4fb;
+        --white: #ffffff;
+    }
 
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #2d1b3d;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                     "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: linear-gradient(135deg, #f7f4fb 0%, #ede6f6 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: clamp(16px, 3vw, 40px);
+    }
 
-        .subhead {
-            font-size: 15px;
-            color: #7a5d8a;
-            border-left: 3px solid #b895d6;
-            padding-left: 14px;
-            margin-bottom: 28px;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-        }
+    .notice-board {
+        width: clamp(320px, 92vw, 900px);
+        background: var(--white);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(60, 40, 90, 0.12);
+        overflow: hidden;
+    }
 
-        /* 📋 规则列表 — 一条一条干干净净 */
-        .rule-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
+    /* 顶部 */
+    .header {
+        background: linear-gradient(135deg, #7a5aa0 0%, #5f437f 100%);
+        color: white;
+        padding: clamp(22px, 4vw, 40px);
+    }
+
+    .header h1 {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        font-size: clamp(14px, 2vw, 18px);
+        opacity: 0.92;
+        line-height: 1.6;
+    }
+
+    /* 内容区 */
+    .content {
+        padding: clamp(20px, 4vw, 40px);
+    }
+
+    .section-title {
+        font-size: clamp(18px, 2vw, 24px);
+        color: var(--primary);
+        font-weight: 700;
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--border);
+    }
+
+    .rule-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .rule-item {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+        padding: clamp(16px, 2vw, 24px);
+        background: #faf8fc;
+        border-left: 5px solid var(--primary);
+        border-radius: 14px;
+        transition: all 0.25s ease;
+    }
+
+    .rule-item:hover {
+        transform: translateX(4px);
+        box-shadow: 0 8px 18px rgba(80, 60, 110, 0.08);
+    }
+
+    .rule-num {
+        min-width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-weight: 700;
+        font-size: clamp(16px, 2vw, 20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .rule-text {
+        flex: 1;
+        color: var(--text-main);
+        font-size: clamp(15px, 1.8vw, 18px);
+        line-height: 1.8;
+        padding-top: 8px;
+    }
+
+    .footer {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px dashed var(--border);
+        text-align: center;
+        color: var(--text-sub);
+        font-size: clamp(14px, 1.5vw, 16px);
+        line-height: 1.8;
+    }
+
+    /* 手机端优化 */
+    @media (max-width: 600px) {
+        .rule-item {
             gap: 14px;
-            margin-bottom: 30px;
         }
 
-        .rule-list li {
-            background: white;
-            padding: 18px 22px;
-            border-radius: 18px;
-            font-size: 16px;
-            font-weight: 500;
-            color: #1f122b;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-            border: 1px solid rgba(200, 175, 220, 0.25);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: 0.2s;
-        }
-
-        .rule-list li:hover {
-            border-color: #c9a8e5;
-            box-shadow: 0 6px 18px rgba(130, 80, 170, 0.08);
-            transform: translateY(-1px);
-        }
-
-        /* 序号小圆标 */
         .rule-num {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            width: 28px;
-            height: 28px;
-            background: #f0e6f8;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #6b3f88;
-            flex-shrink: 0;
+            min-width: 40px;
+            height: 40px;
         }
-
-        .footer-note {
-            text-align: right;
-            font-size: 15px;
-            color: #8e74a0;
-            border-top: 1px dashed #dac7e8;
-            padding-top: 20px;
-            letter-spacing: 0.5px;
-        }
-
-        /* 📱 手机小屏适配 */
-        @media (max-width: 480px) {
-            .card { padding: 28px 20px; }
-            h1 { font-size: 24px; }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 
-<div class="card">
-    <h1>通知</h1>
-    <div class="subhead">请共同维护安静 · 整洁 · 有序的阅读环境</div>
+<div class="notice-board">
+    <div class="header">
+        <h1>通知公告</h1>
+        <p>请共同维护安静、整洁、有序的阅读环境</p>
+    </div>
 
-    <ol class="rule-list">
-        <li><span class="rule-num">1</span> 馆内请保持安静，手机调至静音或振动</li>
-        <li><span class="rule-num">2</span> 阅读完毕后请将书籍放回原处</li>
-        <li><span class="rule-num">3</span> 如需借阅，请携带读者证至服务台办理</li>
-        <li><span class="rule-num">4</span> 请勿在书页上涂写、折叠或损坏图书</li>
-    </ol>
+    <div class="content">
+        <div class="section-title">馆内须知</div>
 
-    <p class="footer-note">✨ 感谢配合 · 祝阅读愉快</p>
+        <div class="rule-list">
+            <div class="rule-item">
+                <div class="rule-num">01</div>
+                <div class="rule-text">馆内请保持安静，手机调至静音或振动模式。</div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-num">02</div>
+                <div class="rule-text">阅读完毕后，请将书籍归还至原位或指定区域。</div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-num">03</div>
+                <div class="rule-text">如需办理借阅，请携带读者证至服务台办理手续。</div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-num">04</div>
+                <div class="rule-text">请爱护图书，勿涂写、折叠或损坏书籍。</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            感谢您的理解与配合<br>
+            祝您阅读愉快
+        </div>
+    </div>
 </div>
 
 </body>
