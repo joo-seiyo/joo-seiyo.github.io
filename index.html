@@ -2,16 +2,134 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>通知</title>
+    <title>通知内容</title>
+    <style>
+        /* 🌿 整体风格 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #f7f0fc 0%, #e9def5 100%);
+            padding: 20px;
+        }
+
+        .card {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 40px;
+            padding: 40px 36px;
+            box-shadow: 0 20px 60px rgba(90, 50, 120, 0.15);
+            border: 1px solid rgba(255,255,255,0.4);
+            transition: all 0.2s ease;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d1b3d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .subhead {
+            font-size: 15px;
+            color: #7a5d8a;
+            border-left: 3px solid #b895d6;
+            padding-left: 14px;
+            margin-bottom: 28px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        /* 📋 规则列表 — 一条一条干干净净 */
+        .rule-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .rule-list li {
+            background: white;
+            padding: 18px 22px;
+            border-radius: 18px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1f122b;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid rgba(200, 175, 220, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: 0.2s;
+        }
+
+        .rule-list li:hover {
+            border-color: #c9a8e5;
+            box-shadow: 0 6px 18px rgba(130, 80, 170, 0.08);
+            transform: translateY(-1px);
+        }
+
+        /* 序号小圆标 */
+        .rule-num {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 28px;
+            height: 28px;
+            background: #f0e6f8;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b3f88;
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            text-align: right;
+            font-size: 15px;
+            color: #8e74a0;
+            border-top: 1px dashed #dac7e8;
+            padding-top: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* 📱 手机小屏适配 */
+        @media (max-width: 480px) {
+            .card { padding: 28px 20px; }
+            h1 { font-size: 24px; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello, Everybody!</h1>
-    <ol>
-        <li>aaaaa</li>
-        <li>bbbbb</li>
-        <li>ccccc</li>
-        <li>ddddddd<li>
+
+<div class="card">
+    <h1>通知</h1>
+    <div class="subhead">请共同维护安静 · 整洁 · 有序的阅读环境</div>
+
+    <ol class="rule-list">
+        <li><span class="rule-num">1</span> 馆内请保持安静，手机调至静音或振动</li>
+        <li><span class="rule-num">2</span> 阅读完毕后请将书籍放回原处</li>
+        <li><span class="rule-num">3</span> 如需借阅，请携带读者证至服务台办理</li>
+        <li><span class="rule-num">4</span> 请勿在书页上涂写、折叠或损坏图书</li>
     </ol>
-    <p>以上！</p >
+
+    <p class="footer-note">✨ 感谢配合 · 祝阅读愉快</p>
+</div>
+
 </body>
 </html>
