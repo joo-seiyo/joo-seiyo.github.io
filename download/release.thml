@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>下载</title>
+</head>
+<body>
+    <h1>📦 下载中心</h1>
+    <p>点击下方按钮下载最新版本：</p>
+    <a href="https://github.com/joo-seiyo/joo-seiyo.github.io/releases/download/测试用/โลโซ(Loso).zip" download>
+        <button>点击下载</button>
+    </a>
+</body>
+</html>
