@@ -1,280 +1,499 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>付款指引 · xujingyao.work</title>
-    <style>
-        /* 全局重置 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>付款通道指引</title>
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: #f5f7fa;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-        .card {
-            max-width: 560px;
-            width: 100%;
-            background: #ffffff;
-            border-radius: 32px;
-            padding: 40px 36px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-            transition: all 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(2px);
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        /* 装饰小标签 */
-        .badge {
-            display: inline-block;
-            background: #eef2ff;
-            color: #4a6cf7;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 4px 14px;
-            border-radius: 20px;
-            letter-spacing: 0.3px;
-            margin-bottom: 18px;
-        }
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;
+    background:
+        radial-gradient(circle at top left,#eef4ff,#f7f9fc 45%,#ffffff);
+    min-height:100vh;
+    color:#1a2332;
+}
 
-        h1 {
-            font-size: 26px;
-            font-weight: 700;
-            color: #0b1a33;
-            margin-bottom: 8px;
-            letter-spacing: -0.3px;
-        }
+.page{
+    display:none;
+    padding:20px;
+}
 
-        .subhead {
-            color: #64748b;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 28px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid #edf2f7;
-        }
+.page.active{
+    display:block;
+}
 
-        /* 付款信息描述 */
-        .info-grid {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 18px 20px;
-            margin-bottom: 28px;
-            border-left: 4px solid #4a6cf7;
-        }
+.home-page{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
 
-        .info-grid p {
-            font-size: 14px;
-            color: #1e293b;
-            line-height: 1.8;
-        }
+.card{
+    width:100%;
+    max-width:950px;
+    margin:auto;
+    background:rgba(255,255,255,0.92);
+    border-radius:32px;
+    padding:42px;
+    box-shadow:0 20px 60px rgba(0,0,0,.08);
+    border:1px solid rgba(255,255,255,.9);
+    backdrop-filter:blur(10px);
+}
 
-        .info-grid strong {
-            color: #0b1a33;
-            font-weight: 600;
-        }
+.home-card{
+    width:100%;
+    max-width:560px;
+    text-align:center;
+}
 
-        .highlight {
-            background: #fef9e7;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-weight: 500;
-            color: #b45309;
-        }
+.logo{
+    width:90px;
+    height:90px;
+    object-fit:contain;
+    margin-bottom:18px;
+}
 
-        /* 二维码区域 */
-        .qr-section {
-            text-align: center;
-            margin: 28px 0 30px 0;
-        }
+.badge{
+    display:inline-block;
+    background:#eef2ff;
+    color:#4a6cf7;
+    font-size:12px;
+    font-weight:700;
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:18px;
+}
 
-        .qr-box {
-            background: #ffffff;
-            border: 2px dashed #dce2ef;
-            border-radius: 20px;
-            padding: 24px 24px 18px 24px;
-            transition: border 0.2s;
-            display: inline-block;
-            width: 100%;
-            max-width: 280px;
-        }
+.title{
+    font-size:34px;
+    font-weight:700;
+    margin-bottom:10px;
+    color:#0b1a33;
+}
 
-        .qr-box:hover {
-            border-color: #4a6cf7;
-        }
+.subtitle{
+    color:#64748b;
+    line-height:1.7;
+    margin-bottom:30px;
+}
 
-        .qr-placeholder {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            background: #f1f4f9;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
+.menu-btn{
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:18px;
+    margin:12px 0;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
 
-        /* 注意：这里放你的真实二维码图片 */
-        .qr-placeholder img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 12px;
-        }
+.menu-btn:hover{
+    transform:translateY(-4px);
+}
 
-        .qr-label {
-            font-size: 13px;
-            color: #475569;
-            font-weight: 500;
-        }
+.btn-public{
+    background:linear-gradient(135deg,#4a6cf7,#6c8dff);
+    color:white;
+    box-shadow:0 12px 30px rgba(74,108,247,.25);
+}
 
-        /* 下载按钮 */
-        .btn-download {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: #0b1a33;
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 60px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(11, 26, 51, 0.15);
-        }
+.btn-private{
+    background:linear-gradient(135deg,#0f172a,#334155);
+    color:white;
+    box-shadow:0 12px 30px rgba(15,23,42,.25);
+}
 
-        .btn-download:hover {
-            background: #1e2f4a;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(11, 26, 51, 0.20);
-        }
+.back-btn{
+    border:none;
+    background:#0f172a;
+    color:white;
+    padding:12px 22px;
+    border-radius:12px;
+    cursor:pointer;
+    margin-bottom:24px;
+}
 
-        .btn-download:active {
-            transform: translateY(0);
-        }
+.section-title{
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:12px;
+}
 
-        .btn-secondary {
-            background: transparent;
-            color: #0b1a33;
-            box-shadow: none;
-            border: 1px solid #dce2ef;
-            margin-top: 12px;
-            font-weight: 500;
-        }
+.info-box{
+    background:#f8fafc;
+    border-left:4px solid #4a6cf7;
+    border-radius:18px;
+    padding:20px;
+    margin:24px 0;
+}
 
-        .btn-secondary:hover {
-            background: #f1f4f9;
-            box-shadow: none;
-        }
+.info-box p{
+    line-height:1.9;
+    color:#334155;
+}
 
-        .footer-note {
-            margin-top: 28px;
-            font-size: 13px;
-            color: #94a3b8;
-            text-align: center;
-            border-top: 1px solid #edf2f7;
-            padding-top: 22px;
-            line-height: 1.6;
-        }
+.highlight{
+    background:#fef9e7;
+    padding:2px 8px;
+    border-radius:8px;
+    color:#b45309;
+    font-weight:600;
+}
 
-        .footer-note span {
-            background: #f1f5f9;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            color: #475569;
-        }
+.info-row{
+    background:white;
+    border:1px solid #edf2f7;
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+    cursor:pointer;
+    transition:.2s;
+}
 
-        /* 移动端调整 */
-        @media (max-width: 500px) {
-            .card {
-                padding: 28px 20px;
-            }
-            h1 {
-                font-size: 22px;
-            }
-            .qr-box {
-                max-width: 100%;
-            }
-        }
-    </style>
+.info-row:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+.label{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.value{
+    font-size:16px;
+    font-weight:600;
+    word-break:break-all;
+}
+
+.copy-tip{
+    color:#4a6cf7;
+    font-size:13px;
+    margin-top:12px;
+}
+
+.qr-box{
+    margin:30px auto 20px;
+    max-width:320px;
+    text-align:center;
+}
+
+.qr-image{
+    background:white;
+    border:2px dashed #dce2ef;
+    border-radius:20px;
+    padding:18px;
+}
+
+.qr-image img{
+    width:100%;
+    border-radius:12px;
+}
+
+.qr-label{
+    margin-top:12px;
+    color:#64748b;
+    font-size:14px;
+}
+
+.action-row{
+    display:flex;
+    gap:12px;
+    margin-top:22px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    flex:1;
+    border:none;
+    padding:15px;
+    border-radius:14px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.25s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-blue{
+    background:#4a6cf7;
+    color:white;
+}
+
+.btn-green{
+    background:#16a34a;
+    color:white;
+}
+
+.btn-red{
+    background:#dc2626;
+    color:white;
+}
+
+.footer-note{
+    margin-top:28px;
+    text-align:center;
+    color:#94a3b8;
+    font-size:13px;
+    border-top:1px solid #edf2f7;
+    padding-top:20px;
+    line-height:1.7;
+}
+
+.footer-note span{
+    background:#f1f5f9;
+    padding:4px 12px;
+    border-radius:999px;
+}
+
+@media (max-width:768px){
+    .card{
+        padding:24px;
+    }
+
+    .action-row{
+        flex-direction:column;
+    }
+
+    .title{
+        font-size:28px;
+    }
+}
+</style>
 </head>
 <body>
+    <div id="homePage" class="page active">
+    <div class="home-page">
+        <div class="card home-card">
+            <img src="./logo.png" class="logo" alt="logo">
 
-<div class="card">
-    <!-- 小标签 -->
-    <div class="badge">🔹 官方付款通道</div>
+            <div class="badge">🔹 官方付款通道</div>
 
-    <!-- 标题 -->
-    <h1>💳 付款指引</h1>
-    <div class="subhead">
-        请使用 <strong>微信</strong> 或 <strong>支付宝</strong> 扫描下方二维码完成付款。<br>
-        付款后无需额外登记，我将在到账后与您确认。
-    </div>
+            <div class="title">付款通道指引</div>
 
-    <!-- 详细说明（防错） -->
-    <div class="info-grid">
-        <p>
-            <strong>📌 付款注意事项</strong><br>
-            · 付款时请务必备注 <span class="highlight">「公司+姓名」</span>，以便核对<br>
-            · 金额以双方确认的 <strong>对账单</strong> 为准<br>
-            · 如有疑问，请先联系财务确认，避免重复付款
-        </p >
-    </div>
-
-    <!-- 收款码展示 + 下载 -->
-    <div class="qr-section">
-        <div class="qr-box">
-            <!-- 这里是你的收款码图片，替换 src 即可 -->
-            <div class="qr-placeholder">
-                < img src="你的收款码图片链接.jpg" alt="收款码" style="width:100%; height:100%; object-fit:contain; border-radius:12px;">
+            <div class="subtitle">
+                请选择付款方式<br>
+                系统将展示对应付款信息
             </div>
-            <div class="qr-label">👆 微信 / 支付宝 通用收款码</div>
+
+            <button class="menu-btn btn-public" onclick="showPage('publicPage')">
+                🏦 对公付款信息
+            </button>
+
+            <button class="menu-btn btn-private" onclick="showPage('privatePage')">
+                💳 个人付款信息
+            </button>
         </div>
-    </div>
-
-    <!-- 两个按钮：下载码 + 复制备用 -->
-    <a href=" " download="收款码_xujingyao.jpg" class="btn-download">
-        ⬇️ 下载收款码（保存到相册）
-    </a >
-
-    <button class="btn-download btn-secondary" onclick="window.location.href='mailto:你的邮箱@example.com?subject=付款确认-请附截图'">
-        📧 付款后发送确认邮件
-    </button>
-
-    <div class="footer-note">
-        <span>🔒 本页面仅用于展示收款码</span><br>
-        所有付款以实际到账为准 · xujingyao.work
     </div>
 </div>
 
-<!-- 简单交互提醒 -->
+<div id="publicPage" class="page">
+    <div class="card" id="publicCard">
+
+        <button class="back-btn" onclick="showPage('homePage')">← 返回首页</button>
+
+        <div class="badge">🔹 官方付款通道</div>
+
+        <div class="section-title">对公付款信息</div>
+
+        <div class="subtitle">
+            请使用以下账户信息进行付款或转账。<br>
+            付款前请仔细核对收款账户信息。
+        </div>
+
+        <div class="info-row" onclick="copyText('上海星辰信息技术有限公司')">
+            <div class="label">公司全称</div>
+            <div class="value">上海星辰信息技术有限公司</div>
+        </div>
+
+        <div class="info-row" onclick="copyText('91310100MA1XXXXX0X')">
+            <div class="label">纳税人识别号</div>
+            <div class="value">91310100MA1XXXXX0X</div>
+        </div>
+
+        <div class="info-row" onclick="copyText('上海市浦东新区张江路88号3号楼201室')">
+            <div class="label">注册地址</div>
+            <div class="value">上海市浦东新区张江路88号3号楼201室</div>
+        </div>
+
+        <div class="info-row" onclick="copyText('021-6888 1234')">
+            <div class="label">联系电话</div>
+            <div class="value">021-6888 1234</div>
+        </div>
+
+        <div class="info-row" onclick="copyText('中国建设银行上海张江支行')">
+            <div class="label">开户银行</div>
+            <div class="value">中国建设银行上海张江支行</div>
+        </div>
+
+        <div class="info-row" onclick="copyText('3100 1234 5678 9012 345')">
+            <div class="label">对公账号</div>
+            <div class="value">3100 1234 5678 9012 345</div>
+        </div>
+
+        <div class="copy-tip">📋 点击任意卡片即可复制</div>
+
+        <div class="action-row">
+            <button class="btn btn-blue" onclick="copyAllInfo()">复制全部信息</button>
+            <button class="btn btn-green" onclick="downloadPublicWord()">下载 Word</button>
+            <button class="btn btn-red" onclick="downloadPublicPDF()">下载 PDF</button>
+        </div>
+
+        <div class="footer-note">
+            <span>🔒 本页面仅用于展示对公付款信息</span><br>
+            所有付款以实际到账为准 · joo-seiyo.github.io
+        </div>
+    </div>
+</div>
+
+<div id="privatePage" class="page">
+    <div class="card">
+
+        <button class="back-btn" onclick="showPage('homePage')">← 返回首页</button>
+
+        <div class="badge">🔹 官方付款通道</div>
+
+        <div class="section-title">个人付款信息</div>
+
+        <div class="subtitle">
+            请使用微信扫描下方二维码完成付款。<br>
+            付款时请备注 公司+姓名，便于核对。
+        </div>
+
+        <div class="info-box">
+            <p>
+                <strong>📌 付款注意事项</strong><br>
+                · 付款时请务必备注 <span class="highlight">公司+姓名</span>，以便核对<br>
+                · 金额以双方确认的对账单为准<br>
+                · 如有疑问，请先联系确认，避免重复付款
+            </p>
+        </div>
+
+        <div class="qr-box">
+            <div class="qr-image">
+                <img src="./we.png" alt="二维码">
+            </div>
+            <div class="qr-label">👆 收款二维码</div>
+        </div>
+
+        <div class="action-row">
+            <button class="btn btn-green" onclick="downloadQR()">下载二维码</button>
+        </div>
+
+        <div class="footer-note">
+            <span>🔒 本页面仅用于展示收款码</span><br>
+            所有付款以实际到账为准 · joo-seiyo.github.io
+        </div>
+    </div>
+</div>
 <script>
-    // 如果用户点击邮件按钮，给个友好提示
-    document.querySelector('.btn-secondary')?.addEventListener('click', function(e) {
-        // 不阻止默认行为，只是额外提醒
-        setTimeout(() => {
-            alert('💡 请将付款截图作为附件发送，方便我快速核对。');
-        }, 300);
+function showPage(pageId){
+    document.querySelectorAll(".page").forEach(page=>{
+        page.classList.remove("active");
     });
+    document.getElementById(pageId).classList.add("active");
+}
+
+function copyText(text){
+    navigator.clipboard.writeText(text).then(()=>{
+        alert("复制成功");
+    }).catch(()=>{
+        alert("复制失败");
+    });
+}
+
+function copyAllInfo(){
+    const allInfo =
+`公司全称：上海星辰信息技术有限公司
+纳税人识别号：91310100MA1XXXXX0X
+注册地址：上海市浦东新区张江路88号3号楼201室
+联系电话：021-6888 1234
+开户银行：中国建设银行上海张江支行
+对公账号：3100 1234 5678 9012 345`;
+
+    navigator.clipboard.writeText(allInfo).then(()=>{
+        alert("六要素复制成功");
+    }).catch(()=>{
+        alert("复制失败");
+    });
+}
+
+function downloadQR(){
+    const link=document.createElement("a");
+    link.href="./we.png";
+    link.download="收款二维码.png";
+    link.click();
+}
+
+function downloadPublicWord(){
+    const html = `
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>对公付款信息</title>
+    </head>
+    <body style="font-family:Microsoft YaHei;padding:40px;">
+        <h2>对公付款信息</h2>
+        <p>公司全称：上海星辰信息技术有限公司</p>
+        <p>纳税人识别号：91310100MA1XXXXX0X</p>
+        <p>注册地址：上海市浦东新区张江路88号3号楼201室</p>
+        <p>联系电话：021-6888 1234</p>
+        <p>开户银行：中国建设银行上海张江支行</p>
+        <p>对公账号：3100 1234 5678 9012 345</p>
+    </body>
+    </html>
+    `;
+
+    const blob = new Blob([html], {
+        type:"application/msword;charset=utf-8"
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "对公付款信息.doc";
+    link.click();
+}
+
+async function downloadPublicPDF(){
+    const card=document.getElementById("publicCard");
+
+    const canvas = await html2canvas(card,{
+        scale:2,
+        useCORS:true
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p","mm","a4");
+
+    const pdfWidth = 210;
+    const imgWidth = pdfWidth - 20;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+
+    pdf.addImage(imgData,"PNG",10,10,imgWidth,imgHeight);
+    pdf.save("对公付款信息.pdf");
+}
+
+window.onload=function(){
+    showPage("homePage");
+}
 </script>
 
 </body>
