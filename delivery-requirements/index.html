@@ -1,1 +1,330 @@
-2
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中涂化工入厂卸货安全告知书</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #1a1a1a;
+            --dark: #222;
+            --white: #ffffff;
+            --gray-bg: #f4f4f4;
+            --gray-border: #d4d4d4;
+            --red: #c62828;           /* 安全红 */
+            --red-dark: #8e0000;
+            --gold: #a68a56;          /* 仅用于极小的点缀 */
+            --text: #1a1a1a;
+            --text-light: #555;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            background: #e8e8e8;      /* 中性灰底，模拟墙面 */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(16px, 3vw, 48px);
+            color: var(--text);
+        }
+
+        .notice-board {
+            width: clamp(340px, 90vw, 880px);
+            background: var(--white);
+            border-radius: 2px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #ccc;
+        }
+
+        /* ========== 顶部：深色头 + 红色警示竖条 ========== */
+        .header {
+            background: #1c1c1c;          /* 近黑色 */
+            color: white;
+            padding: clamp(24px, 4vw, 44px) clamp(28px, 5vw, 48px);
+            position: relative;
+            border-bottom: 2px solid #333;
+        }
+
+        /* 左侧红色装饰条，模拟“文件头”红竖线 */
+        .header::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            bottom: 12px;
+            width: 6px;
+            background: var(--red);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .header h1 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-wrap: balance;
+            font-family: "PingFang SC", "Microsoft YaHei", "SimHei", sans-serif;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .header .subtitle {
+            font-size: clamp(14px, 1.8vw, 17px);
+            opacity: 0.85;
+            line-height: 1.6;
+            letter-spacing: 1px;
+            border-left: 3px solid var(--red);
+            padding-left: 12px;
+            margin-top: 6px;
+        }
+
+        /* ========== 内容区 ========== */
+        .content {
+            padding: clamp(24px, 4vw, 44px) clamp(28px, 5vw, 48px);
+            background: var(--white);
+        }
+
+        .section-title {
+            font-size: clamp(18px, 2.2vw, 24px);
+            color: var(--black);
+            font-weight: 700;
+            margin-bottom: 28px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ccc;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 小安全图标（纯装饰，不干扰语义） */
+        .section-title::before {
+            content: "[表情]";
+            color: var(--red);
+            font-size: 1.3em;
+            line-height: 1;
+        }
+
+        .rule-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .rule-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 18px 22px;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid #e0e0e0;     /* 初始灰色，悬停变红 */
+            border-radius: 2px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        .rule-item:hover {
+            border-left-color: var(--red);
+            border-left-width: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .rule-item:focus-visible {
+            outline: 2px solid var(--red);
+            outline-offset: 2px;
+            border-left-color: var(--red);
+        }
+
+        /* 编号：红色圆形，安全标志风格 */
+        .rule-num {
+            min-width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--red);
+            color: white;
+            font-weight: 700;
+            font-size: clamp(16px, 1.8vw, 19px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(198,40,40,0.3);
+            font-feature-settings: "tnum";
+            font-family: "Arial", sans-serif;
+        }
+
+        .rule-text {
+            flex: 1;
+            color: var(--text);
+            font-size: clamp(15px, 1.7vw, 17px);
+            line-height: 1.7;
+            padding-top: 8px;
+        }
+
+        .rule-text ul {
+            padding-left: 1.3em;
+            margin-top: 0.4em;
+            list-style-type: square;
+            color: #333;
+        }
+
+        .rule-text ul li {
+            margin-bottom: 0.25em;
+        }
+
+        /* 强调关键词（红色） */
+        .rule-text strong, .rule-text .danger {
+            color: var(--red-dark);
+            font-weight: 700;
+        }
+
+        /* ========== 底部危险品警示条 ========== */
+        .footer {
+            margin-top: 36px;
+            padding-top: 24px;
+            border-top: 1px solid #d0d0d0;
+            text-align: center;
+            color: #444;
+            font-size: clamp(13px, 1.4vw, 15px);
+            line-height: 1.8;
+            letter-spacing: 0.3px;
+            position: relative;
+        }
+
+        /* 模拟警示胶带效果 */
+        .footer::before {
+            content: "";
+            display: block;
+            height: 4px;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--red),
+                var(--red) 10px,
+                #ffb300 10px,
+                #ffb300 20px
+            );
+            margin-bottom: 20px;
+            border-radius: 2px;
+            opacity: 0.8;
+        }
+
+        .footer p {
+            margin: 6px 0;
+        }
+
+        .footer .legal-note {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 12px;
+            font-style: italic;
+        }
+
+        /* ========== 手机端 ========== */
+        @media (max-width: 600px) {
+            .rule-item {
+                gap: 14px;
+                padding: 14px 16px;
+            }
+            .rule-num {
+                min-width: 38px;
+                height: 38px;
+                font-size: 15px;
+            }
+        }
+
+        /* ========== 打印样式 ========== */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .notice-board {
+                box-shadow: none;
+                border: 1px solid #999;
+                width: 100%;
+            }
+            .rule-item:hover {
+                border-left-color: #e0e0e0;
+                box-shadow: none;
+            }
+            .header::before {
+                background: #333; /* 打印时红色可能变灰，保持可见 */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="notice-board">
+        <header class="header">
+            <h1>中涂化工入厂卸货安全告知书</h1>
+            <div class="subtitle">危险化学品作业场所 · 请严格遵守</div>
+        </header>
+
+        <section class="content">
+            <h2 class="section-title">入厂守则</h2>
+
+            <ol class="rule-list">
+                <li class="rule-item" tabindex="0">
+                    <span class="rule-num" aria-hidden="true">01</span>
+                    <span class="rule-text">
+                        <strong>个人防护：</strong>进入卸货区域前，必须正确佩戴安全帽，并确保帽扣系紧。涉及危化品操作时须穿戴相应防护用具。
+                    </span>
+                </li>
+
+                <li class="rule-item" tabindex="0">
+                    <span class="rule-num" aria-hidden="true">02</span>
+                    <span class="rule-text">
+                        <strong>车辆安全：</strong>所有装卸车辆必须配备：
+                        <ul>
+                            <li>灭火器（压力表在绿色区域，且<strong>在检验有效期内</strong>）</li>
+                            <li>阻火器（防火罩）<strong>安装到位</strong></li>
+                        </ul>
+                    </span>
+                </li>
+
+                <li class="rule-item" tabindex="0">
+                    <span class="rule-num" aria-hidden="true">03</span>
+                    <span class="rule-text">
+                        <strong>行为管理：</strong>作业全程接受我方现场监护人员指挥；未经许可，<strong>严禁</strong>进入车间、仓库等非卸货区域。禁止携带火种、非防爆电子设备。
+                    </span>
+                </li>
+
+                <li class="rule-item" tabindex="0">
+                    <span class="rule-num" aria-hidden="true">04</span>
+                    <span class="rule-text">
+                        <strong>违规处置：</strong>凡违反上述任意一条，我方有权<strong>立即中止卸货作业</strong>，并要求车辆及人员立即驶离厂区。造成安全、环境或财产损失的，将依法追究责任，并依据《危险化学品安全管理条例》等法规处理。
+                    </span>
+                </li>
+
+                <li class="rule-item" tabindex="0">
+                    <span class="rule-num" aria-hidden="true">05</span>
+                    <span class="rule-text">
+                        <strong>应急响应：</strong>如遇泄漏、火情等紧急情况，请立即停止作业，拨打厂区应急电话：<span class="danger">XXX-XXXXXXXX</span>
+                    </span>
+                </li>
+            </ol>
+
+            <footer class="footer">
+                <p>卸货时间：周一至周六 08:00 – 17:00（法定节假日另行通知）</p>
+                <p>工厂地址：××省××市××工业园区××路××号</p>
+                <p class="legal-note">本告知书依据《危险化学品安全管理条例》及相关法规制定，入厂即视为同意遵守。</p>
+            </footer>
+        </section>
+    </main>
+
+</body>
+</html>
