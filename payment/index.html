@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>付款通道指引</title>
 
-  <!-- jsPDF 和 html2canvas 建议加上 integrity 校验，但因哈希值动态变化此处略 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -32,7 +31,6 @@
       display: block;
     }
 
-    /* 主页居中容器 */
     .home-page {
       display: flex;
       justify-content: center;
@@ -57,11 +55,13 @@
       text-align: center;
     }
 
+    /* Logo 尺寸改进：限制最大宽度，高度自适应 */
     .logo {
-      width: 90px;
-      height: 90px;
+      display: block;
+      max-width: 160px;
+      height: auto;
+      margin: 0 auto 18px;
       object-fit: contain;
-      margin-bottom: 18px;
     }
 
     .badge {
@@ -161,7 +161,6 @@
       margin-bottom: 14px;
       cursor: pointer;
       transition: .2s;
-      /* 可访问性改进：添加 focus 样式 */
       outline: none;
     }
 
@@ -192,6 +191,7 @@
       margin-top: 12px;
     }
 
+    /* 二维码区域优化 */
     .qr-box {
       margin: 30px auto 20px;
       max-width: 320px;
@@ -202,12 +202,17 @@
       background: white;
       border: 2px dashed #dce2ef;
       border-radius: 20px;
-      padding: 18px;
+      padding: 10px;            /* 减小内边距 */
+      display: inline-block;
     }
 
     .qr-image img {
+      display: block;
       width: 100%;
+      max-width: 200px;        /* 限制电脑端最大宽度，手机端依旧充满 */
+      height: auto;
       border-radius: 12px;
+      margin: 0 auto;
     }
 
     .qr-label {
@@ -268,7 +273,6 @@
       border-radius: 999px;
     }
 
-    /* Toast 提示样式 */
     .toast {
       position: fixed;
       bottom: 30px;
@@ -303,12 +307,15 @@
       .title {
         font-size: 28px;
       }
+
+      .qr-image img {
+        max-width: 220px;   /* 手机端可以稍微大一点 */
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Toast 容器 -->
   <div id="toast" class="toast"></div>
 
   <!-- 首页 -->
@@ -317,7 +324,7 @@
       <div class="card home-card">
         <img src="./logo.png" class="logo" alt="公司Logo"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div style="display:none; width:90px; height:90px; margin:0 auto 18px; background:#f1f5f9; border-radius:50%; align-items:center; justify-content:center; color:#94a3b8; font-size:12px;">Logo</div>
+        <div style="display:none; max-width:160px; margin:0 auto 18px; background:#f1f5f9; border-radius:12px; padding:20px; text-align:center; color:#94a3b8; font-size:12px;">Logo</div>
 
         <h1 class="title">付款通道指引</h1>
         <p class="subtitle">
@@ -347,7 +354,6 @@
         付款前请仔细核对收款账户信息。
       </p>
 
-      <!-- 信息卡片将通过 JS 动态生成，保证数据唯一性 -->
       <div id="publicInfoContainer"></div>
 
       <div class="copy-tip">📋 点击任意卡片即可复制</div>
@@ -390,7 +396,7 @@
         <div class="qr-image">
           <img src="./we.png" alt="收款二维码"
                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-          <div style="display:none; padding:30px; color:#94a3b8; background:#f8fafc; border-radius:12px;">二维码图片加载失败</div>
+          <div style="display:none; padding:30px; color:#94a3b8; background:#f8fafc; border-radius:12px; max-width:200px; margin:0 auto;">二维码图片加载失败</div>
         </div>
         <div class="qr-label">👆 收款二维码</div>
       </div>
@@ -417,7 +423,6 @@
       account: '3100 1234 5678 9012 345'
     };
 
-    // 信息项的显示顺序和对应标签
     const infoItems = [
       { label: '公司全称', key: 'company' },
       { label: '纳税人识别号', key: 'taxId' },
@@ -429,11 +434,10 @@
 
     // ==================== Toast 提示 ====================
     let toastTimer = null;
-    function showToast(message, type = 'success') {
+    function showToast(message) {
       const toast = document.getElementById('toast');
       toast.textContent = message;
       toast.className = 'toast show';
-      // 可扩展不同类型颜色，这里保持简洁
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => {
         toast.classList.remove('show');
@@ -466,7 +470,7 @@
       await copyText(allInfo);
     }
 
-    // ==================== 构建对公信息卡片（数据驱动） ====================
+    // ==================== 构建对公信息卡片 ====================
     function buildPublicInfoCards() {
       const container = document.getElementById('publicInfoContainer');
       container.innerHTML = infoItems.map(item => {
@@ -483,7 +487,7 @@
       }).join('');
     }
 
-    // ==================== 下载二维码（改进为 fetch + Blob） ====================
+    // ==================== 下载二维码 ====================
     async function downloadQR() {
       try {
         const response = await fetch('./we.png');
@@ -504,7 +508,7 @@
       }
     }
 
-    // ==================== 下载 Word（HTML 伪 Word，保留原有逻辑） ====================
+    // ==================== 下载 Word ====================
     function downloadPublicWord() {
       const infoLines = infoItems
         .map(item => `<p>${item.label}：${publicInfo[item.key]}</p>`)
@@ -523,7 +527,6 @@
         </html>
       `;
 
-      // 添加 UTF-8 BOM 使 Word 能正确识别编码
       const blob = new Blob(['\uFEFF' + htmlContent], {
         type: 'application/msword;charset=utf-8'
       });
@@ -535,24 +538,37 @@
       showToast('Word 文件已生成');
     }
 
-    // ==================== 下载 PDF（隐藏按钮后截图） ====================
+    // ==================== 下载 PDF（完整显示，无裁剪） ====================
     async function downloadPublicPDF() {
       const card = document.getElementById('publicCard');
       const actionRow = card.querySelector('.action-row');
       const copyTip = card.querySelector('.copy-tip');
+      const badge = card.querySelector('.badge');
 
-      // 保存原始显示状态并隐藏操作元素
-      const actionOriginal = actionRow.style.display;
-      const tipOriginal = copyTip.style.display;
+      // 保存原始样式
+      const originalFilter = card.style.backdropFilter;
+      const actionDisplay = actionRow.style.display;
+      const tipDisplay = copyTip.style.display;
+      const badgeDisplay = badge ? badge.style.display : '';
+
+      // 隐藏操作元素
       actionRow.style.display = 'none';
       copyTip.style.display = 'none';
+      if (badge) badge.style.display = 'none';
+      // 移除 backdrop-filter 以避免 html2canvas 渲染异常
+      card.style.backdropFilter = 'none';
 
       try {
         showToast('正在生成 PDF，请稍候...');
         const canvas = await html2canvas(card, {
           scale: 2,
           useCORS: true,
-          backgroundColor: '#ffffff'
+          backgroundColor: '#ffffff',
+          // 按元素实际内容尺寸截图，防止截断
+          width: card.scrollWidth,
+          height: card.scrollHeight,
+          windowWidth: card.scrollWidth,
+          windowHeight: card.scrollHeight,
         });
 
         const imgData = canvas.toDataURL('image/png');
@@ -570,9 +586,11 @@
         showToast('❌ PDF 生成失败，请重试');
         console.error('PDF 生成失败:', err);
       } finally {
-        // 恢复显示
-        actionRow.style.display = actionOriginal;
-        copyTip.style.display = tipOriginal;
+        // 恢复样式
+        actionRow.style.display = actionDisplay;
+        copyTip.style.display = tipDisplay;
+        if (badge) badge.style.display = badgeDisplay;
+        card.style.backdropFilter = originalFilter;
       }
     }
 
