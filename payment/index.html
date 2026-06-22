@@ -2,13 +2,29 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>付款通道指引</title>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
   <style>
+    :root {
+      --primary: #4a6cf7;
+      --primary-light: #6c8dff;
+      --dark: #0f172a;
+      --gray: #64748b;
+      --light-bg: #f8fafc;
+      --border: #edf2f7;
+      --radius: 16px;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --green: #16a34a;
+      --red: #dc2626;
+      --text-dark: #0b1a33;
+      --text-muted: #94a3b8;
+      --highlight-bg: #fef9e7;
+      --highlight-text: #b45309;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -16,7 +32,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      font-family: var(--font-family);
       background: radial-gradient(circle at top left, #eef4ff, #f7f9fc 45%, #ffffff);
       min-height: 100vh;
       color: #1a2332;
@@ -42,7 +58,7 @@
       width: 100%;
       max-width: 950px;
       margin: auto;
-      background: rgba(255, 255, 255, 0.92);
+      background: var(--card-bg);
       border-radius: 32px;
       padding: 42px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
@@ -55,7 +71,6 @@
       text-align: center;
     }
 
-    /* Logo 尺寸改进：限制最大宽度，高度自适应 */
     .logo {
       display: block;
       max-width: 160px;
@@ -67,7 +82,7 @@
     .badge {
       display: inline-block;
       background: #eef2ff;
-      color: #4a6cf7;
+      color: var(--primary);
       font-size: 12px;
       font-weight: 700;
       padding: 6px 14px;
@@ -79,11 +94,11 @@
       font-size: 34px;
       font-weight: 700;
       margin-bottom: 10px;
-      color: #0b1a33;
+      color: var(--text-dark);
     }
 
     .subtitle {
-      color: #64748b;
+      color: var(--gray);
       line-height: 1.7;
       margin-bottom: 30px;
     }
@@ -105,20 +120,20 @@
     }
 
     .btn-public {
-      background: linear-gradient(135deg, #4a6cf7, #6c8dff);
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
       color: white;
       box-shadow: 0 12px 30px rgba(74, 108, 247, .25);
     }
 
     .btn-private {
-      background: linear-gradient(135deg, #0f172a, #334155);
+      background: linear-gradient(135deg, var(--dark), #334155);
       color: white;
       box-shadow: 0 12px 30px rgba(15, 23, 42, .25);
     }
 
     .back-btn {
       border: none;
-      background: #0f172a;
+      background: var(--dark);
       color: white;
       padding: 12px 22px;
       border-radius: 12px;
@@ -133,8 +148,8 @@
     }
 
     .info-box {
-      background: #f8fafc;
-      border-left: 4px solid #4a6cf7;
+      background: var(--light-bg);
+      border-left: 4px solid var(--primary);
       border-radius: 18px;
       padding: 20px;
       margin: 24px 0;
@@ -146,17 +161,17 @@
     }
 
     .highlight {
-      background: #fef9e7;
+      background: var(--highlight-bg);
       padding: 2px 8px;
       border-radius: 8px;
-      color: #b45309;
+      color: var(--highlight-text);
       font-weight: 600;
     }
 
     .info-row {
       background: white;
-      border: 1px solid #edf2f7;
-      border-radius: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 18px;
       margin-bottom: 14px;
       cursor: pointer;
@@ -170,11 +185,11 @@
 
     .info-row:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, .05);
+      box-shadow: var(--shadow);
     }
 
     .label {
-      color: #64748b;
+      color: var(--gray);
       font-size: 13px;
       margin-bottom: 8px;
     }
@@ -186,12 +201,11 @@
     }
 
     .copy-tip {
-      color: #4a6cf7;
+      color: var(--primary);
       font-size: 13px;
       margin-top: 12px;
     }
 
-    /* 二维码区域优化 */
     .qr-box {
       margin: 30px auto 20px;
       max-width: 320px;
@@ -202,14 +216,14 @@
       background: white;
       border: 2px dashed #dce2ef;
       border-radius: 20px;
-      padding: 10px;            /* 减小内边距 */
+      padding: 10px;
       display: inline-block;
     }
 
     .qr-image img {
       display: block;
       width: 100%;
-      max-width: 200px;        /* 限制电脑端最大宽度，手机端依旧充满 */
+      max-width: 200px;
       height: auto;
       border-radius: 12px;
       margin: 0 auto;
@@ -217,7 +231,7 @@
 
     .qr-label {
       margin-top: 12px;
-      color: #64748b;
+      color: var(--gray);
       font-size: 14px;
     }
 
@@ -243,26 +257,21 @@
     }
 
     .btn-blue {
-      background: #4a6cf7;
+      background: var(--primary);
       color: white;
     }
 
     .btn-green {
-      background: #16a34a;
-      color: white;
-    }
-
-    .btn-red {
-      background: #dc2626;
+      background: var(--green);
       color: white;
     }
 
     .footer-note {
       margin-top: 28px;
       text-align: center;
-      color: #94a3b8;
+      color: var(--text-muted);
       font-size: 13px;
-      border-top: 1px solid #edf2f7;
+      border-top: 1px solid var(--border);
       padding-top: 20px;
       line-height: 1.7;
     }
@@ -299,17 +308,14 @@
       .card {
         padding: 24px;
       }
-
       .action-row {
         flex-direction: column;
       }
-
       .title {
         font-size: 28px;
       }
-
       .qr-image img {
-        max-width: 220px;   /* 手机端可以稍微大一点 */
+        max-width: 220px;
       }
     }
   </style>
@@ -322,30 +328,21 @@
   <div id="homePage" class="page active">
     <main class="home-page">
       <div class="card home-card">
-        <img src="./logo.png" class="logo" alt="公司Logo"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div style="display:none; max-width:160px; margin:0 auto 18px; background:#f1f5f9; border-radius:12px; padding:20px; text-align:center; color:#94a3b8; font-size:12px;">Logo</div>
+        <img id="logoImg" class="logo" alt="公司Logo" src="">
+        <div id="logoPlaceholder" style="display:none; max-width:160px; margin:0 auto 18px; background:#f1f5f9; border-radius:12px; padding:20px; text-align:center; color:#94a3b8; font-size:12px;">Logo</div>
 
         <h1 class="title">付款通道指引</h1>
-        <p class="subtitle">
-          请选择付款方式<br>
-          系统将展示对应付款信息
-        </p>
+        <p class="subtitle" id="homeSubtitle"></p>
 
-        <button type="button" class="menu-btn btn-public" onclick="showPage('publicPage')">
-          🏦 对公付款信息
-        </button>
-        <button type="button" class="menu-btn btn-private" onclick="showPage('privatePage')">
-          💳 个人付款信息
-        </button>
+        <div id="homeButtons"></div>
       </div>
     </main>
   </div>
 
   <!-- 对公付款页 -->
   <div id="publicPage" class="page">
-    <div class="card" id="publicCard">
-      <button type="button" class="back-btn" onclick="showPage('homePage')">← 返回首页</button>
+    <div class="card">
+      <button type="button" class="back-btn" onclick="App.pageManager.show('homePage')">← 返回首页</button>
 
       <div class="badge">🔹 对公账户</div>
       <h2 class="section-title">对公付款信息</h2>
@@ -359,14 +356,13 @@
       <div class="copy-tip">📋 点击任意卡片即可复制</div>
 
       <div class="action-row">
-        <button type="button" class="btn btn-blue" onclick="copyAllInfo()">复制全部信息</button>
-        <button type="button" class="btn btn-green" onclick="downloadPublicWord()">下载 Word</button>
-        <button type="button" class="btn btn-red" onclick="downloadPublicPDF()">下载 PDF</button>
+        <button type="button" class="btn btn-blue" onclick="App.copyAllInfo()">复制全部信息</button>
+        <button type="button" class="btn btn-green" onclick="App.downloadPublicWord()">下载 Word</button>
       </div>
 
       <div class="footer-note">
         <span>🔒 本页面仅用于展示对公付款信息</span><br>
-        所有付款以实际到账为准 · joo-seiyo.github.io
+        所有付款以实际到账为准 · <span id="footerSite1"></span>
       </div>
     </div>
   </div>
@@ -374,7 +370,7 @@
   <!-- 个人付款页 -->
   <div id="privatePage" class="page">
     <div class="card">
-      <button type="button" class="back-btn" onclick="showPage('homePage')">← 返回首页</button>
+      <button type="button" class="back-btn" onclick="App.pageManager.show('homePage')">← 返回首页</button>
 
       <div class="badge">🔹 个人账户</div>
       <h2 class="section-title">个人付款信息</h2>
@@ -394,212 +390,263 @@
 
       <div class="qr-box">
         <div class="qr-image">
-          <img src="./we.png" alt="收款二维码"
-               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-          <div style="display:none; padding:30px; color:#94a3b8; background:#f8fafc; border-radius:12px; max-width:200px; margin:0 auto;">二维码图片加载失败</div>
+          <img id="qrCodeImg" src="" alt="收款二维码">
+          <div id="qrPlaceholder" style="display:none; padding:30px; color:#94a3b8; background:#f8fafc; border-radius:12px; max-width:200px; margin:0 auto;">二维码图片加载失败</div>
         </div>
         <div class="qr-label">👆 收款二维码</div>
       </div>
 
-      <div class="action-row">
-        <button type="button" class="btn btn-green" onclick="downloadQR()">下载二维码</button>
-      </div>
-
       <div class="footer-note">
         <span>🔒 本页面仅用于展示收款码</span><br>
-        所有付款以实际到账为准 · joo-seiyo.github.io
+        所有付款以实际到账为准 · <span id="footerSite2"></span>
       </div>
     </div>
   </div>
 
   <script>
-    // ==================== 单一数据源 ====================
-    const publicInfo = {
-      company: '上海星辰信息技术有限公司',
-      taxId: '91310100MA1XXXXX0X',
-      address: '上海市浦东新区张江路88号3号楼201室',
-      phone: '021-6888 1234',
-      bank: '中国建设银行上海张江支行',
-      account: '3100 1234 5678 9012 345'
-    };
+    (function() {
+      // ==================== 配置模块 ====================
+      const CONFIG = {
+        site: {
+          footer: 'joo-seiyo.github.io',
+        },
+        resources: {
+          logo: './logo.png',
+          qrCode: './we.png',
+        },
+        payment: {
+          public: {
+            company: '上海星辰信息技术有限公司',
+            taxId: '91310100MA1XXXXX0X',
+            address: '上海市浦东新区张江路88号3号楼201室',
+            phone: '021-6888 1234',
+            bank: '中国建设银行上海张江支行',
+            account: '3100 1234 5678 9012 345'
+          },
+          infoItems: [
+            { label: '公司全称', key: 'company' },
+            { label: '纳税人识别号', key: 'taxId' },
+            { label: '注册地址', key: 'address' },
+            { label: '联系电话', key: 'phone' },
+            { label: '开户银行', key: 'bank' },
+            { label: '对公账号', key: 'account' }
+          ]
+        },
+        home: {
+          subtitle: '请选择付款方式<br>系统将展示对应付款信息',
+          buttons: [
+            { text: '🏦 对公付款信息', pageId: 'publicPage', className: 'btn-public' },
+            { text: '💳 个人付款信息', pageId: 'privatePage', className: 'btn-private' }
+          ]
+        }
+      };
 
-    const infoItems = [
-      { label: '公司全称', key: 'company' },
-      { label: '纳税人识别号', key: 'taxId' },
-      { label: '注册地址', key: 'address' },
-      { label: '联系电话', key: 'phone' },
-      { label: '开户银行', key: 'bank' },
-      { label: '对公账号', key: 'account' }
-    ];
+      // ==================== 工具模块 ====================
+      const Utils = {
+        toastTimer: null,
+        showToast(message, duration = 2000) {
+          const toast = document.getElementById('toast');
+          toast.textContent = message;
+          toast.classList.add('show');
+          clearTimeout(this.toastTimer);
+          this.toastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+          }, duration);
+        },
+        copyText(text) {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(text)
+              .then(() => Utils.showToast('✅ 已复制'))
+              .catch(() => Utils.fallbackCopy(text));
+          } else {
+            Utils.fallbackCopy(text);
+          }
+        },
+        fallbackCopy(text) {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          try {
+            document.execCommand('copy');
+            Utils.showToast('✅ 已复制');
+          } catch (e) {
+            Utils.showToast('❌ 复制失败，请手动复制');
+          }
+          document.body.removeChild(textarea);
+        },
+        createElement(tag, props = {}, ...children) {
+          const el = document.createElement(tag);
+          Object.entries(props).forEach(([key, value]) => {
+            if (key === 'className') el.className = value;
+            else if (key === 'textContent') el.textContent = value;
+            else if (key.startsWith('on')) el.addEventListener(key.slice(2).toLowerCase(), value);
+            else el.setAttribute(key, value);
+          });
+          children.forEach(child => {
+            if (typeof child === 'string') el.appendChild(document.createTextNode(child));
+            else if (child instanceof Node) el.appendChild(child);
+          });
+          return el;
+        }
+      };
 
-    // ==================== Toast 提示 ====================
-    let toastTimer = null;
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = 'toast show';
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2000);
-    }
+      // ==================== 页面管理器 ====================
+      class PageManager {
+        constructor() {
+          this.currentPage = null;
+          this.pages = new Map();
+        }
+        register(pageId, initFn) {
+          this.pages.set(pageId, { initFn, initialized: false });
+        }
+        show(pageId) {
+          const page = this.pages.get(pageId);
+          if (!page) return;
 
-    // ==================== 页面切换 ====================
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
-      document.getElementById(pageId).classList.add('active');
-    }
+          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
-    // ==================== 复制工具 ====================
-    async function copyText(text) {
-      try {
-        await navigator.clipboard.writeText(text);
-        showToast('✅ 已复制');
-      } catch (err) {
-        showToast('❌ 复制失败，请手动复制');
-        console.error('复制失败:', err);
+          if (!page.initialized && page.initFn) {
+            page.initFn();
+            page.initialized = true;
+          }
+
+          const target = document.getElementById(pageId);
+          if (target) {
+            target.classList.add('active');
+            this.currentPage = pageId;
+          }
+        }
       }
-    }
 
-    async function copyAllInfo() {
-      const allInfo = infoItems
-        .map(item => `${item.label}：${publicInfo[item.key]}`)
-        .join('\n');
-      await copyText(allInfo);
-    }
+      // ==================== 应用主模块 ====================
+      const App = {
+        pageManager: new PageManager(),
 
-    // ==================== 构建对公信息卡片 ====================
-    function buildPublicInfoCards() {
-      const container = document.getElementById('publicInfoContainer');
-      container.innerHTML = infoItems.map(item => {
-        const value = publicInfo[item.key];
-        return `
-          <div class="info-row" role="button" tabindex="0"
-               aria-label="复制${item.label}：${value}"
-               onclick="copyText('${value.replace(/'/g, "\\'")}')"
-               onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); copyText('${value.replace(/'/g, "\\'")}'); }">
-            <div class="label">${item.label}</div>
-            <div class="value">${value}</div>
-          </div>
-        `;
-      }).join('');
-    }
+        init() {
+          this.setFooterText();
+          this.initHomePage();
+          this.initPublicPageRegistration();
+          this.initPrivatePageRegistration();
+          this.pageManager.show('homePage');
+        },
 
-    // ==================== 下载二维码 ====================
-    async function downloadQR() {
-      try {
-        const response = await fetch('./we.png');
-        if (!response.ok) throw new Error('图片加载失败');
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = '收款二维码.png';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        showToast('二维码下载开始');
-      } catch (err) {
-        showToast('❌ 下载失败，请检查网络或图片是否存在');
-        console.error('下载二维码失败:', err);
-      }
-    }
+        setFooterText() {
+          document.getElementById('footerSite1').textContent = CONFIG.site.footer;
+          document.getElementById('footerSite2').textContent = CONFIG.site.footer;
+        },
 
-    // ==================== 下载 Word ====================
-    function downloadPublicWord() {
-      const infoLines = infoItems
-        .map(item => `<p>${item.label}：${publicInfo[item.key]}</p>`)
-        .join('\n');
+        initHomePage() {
+          this.pageManager.register('homePage', null);
 
-      const htmlContent = `
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <title>对公付款信息</title>
-        </head>
-        <body style="font-family:Microsoft YaHei;padding:40px;">
-          <h2>对公付款信息</h2>
-          ${infoLines}
-        </body>
-        </html>
-      `;
+          const logoImg = document.getElementById('logoImg');
+          const logoPlaceholder = document.getElementById('logoPlaceholder');
+          logoImg.src = CONFIG.resources.logo;
+          logoImg.onerror = () => {
+            logoImg.style.display = 'none';
+            logoPlaceholder.style.display = 'block';
+          };
+          logoImg.onload = () => {
+            logoPlaceholder.style.display = 'none';
+          };
 
-      const blob = new Blob(['\uFEFF' + htmlContent], {
-        type: 'application/msword;charset=utf-8'
-      });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = '对公付款信息.doc';
-      link.click();
-      URL.revokeObjectURL(link.href);
-      showToast('Word 文件已生成');
-    }
+          document.getElementById('homeSubtitle').innerHTML = CONFIG.home.subtitle;
 
-    // ==================== 下载 PDF（完整显示，无裁剪） ====================
-    async function downloadPublicPDF() {
-      const card = document.getElementById('publicCard');
-      const actionRow = card.querySelector('.action-row');
-      const copyTip = card.querySelector('.copy-tip');
-      const badge = card.querySelector('.badge');
+          const btnContainer = document.getElementById('homeButtons');
+          btnContainer.innerHTML = '';
+          CONFIG.home.buttons.forEach(btn => {
+            const button = Utils.createElement('button', {
+              type: 'button',
+              className: `menu-btn ${btn.className}`,
+              textContent: btn.text,
+              onClick: () => this.pageManager.show(btn.pageId)
+            });
+            btnContainer.appendChild(button);
+          });
+        },
 
-      // 保存原始样式
-      const originalFilter = card.style.backdropFilter;
-      const actionDisplay = actionRow.style.display;
-      const tipDisplay = copyTip.style.display;
-      const badgeDisplay = badge ? badge.style.display : '';
+        initPublicPageRegistration() {
+          this.pageManager.register('publicPage', () => {
+            const container = document.getElementById('publicInfoContainer');
+            container.innerHTML = '';
+            CONFIG.payment.infoItems.forEach(item => {
+              const value = CONFIG.payment.public[item.key];
+              const row = Utils.createElement('div', {
+                className: 'info-row',
+                role: 'button',
+                tabindex: '0',
+                'aria-label': `复制${item.label}：${value}`
+              });
+              const labelDiv = Utils.createElement('div', { className: 'label', textContent: item.label });
+              const valueDiv = Utils.createElement('div', { className: 'value', textContent: value });
+              row.appendChild(labelDiv);
+              row.appendChild(valueDiv);
+              row.addEventListener('click', () => Utils.copyText(value));
+              row.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  Utils.copyText(value);
+                }
+              });
+              container.appendChild(row);
+            });
+          });
+        },
 
-      // 隐藏操作元素
-      actionRow.style.display = 'none';
-      copyTip.style.display = 'none';
-      if (badge) badge.style.display = 'none';
-      // 移除 backdrop-filter 以避免 html2canvas 渲染异常
-      card.style.backdropFilter = 'none';
+        initPrivatePageRegistration() {
+          this.pageManager.register('privatePage', () => {
+            const qrImg = document.getElementById('qrCodeImg');
+            const qrPlaceholder = document.getElementById('qrPlaceholder');
+            qrImg.src = CONFIG.resources.qrCode;
+            qrImg.onerror = () => {
+              qrImg.style.display = 'none';
+              qrPlaceholder.style.display = 'block';
+            };
+            qrImg.onload = () => {
+              qrPlaceholder.style.display = 'none';
+            };
+          });
+        },
 
-      try {
-        showToast('正在生成 PDF，请稍候...');
-        const canvas = await html2canvas(card, {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: '#ffffff',
-          // 按元素实际内容尺寸截图，防止截断
-          width: card.scrollWidth,
-          height: card.scrollHeight,
-          windowWidth: card.scrollWidth,
-          windowHeight: card.scrollHeight,
-        });
+        copyAllInfo() {
+          const allInfo = CONFIG.payment.infoItems
+            .map(item => `${item.label}：${CONFIG.payment.public[item.key]}`)
+            .join('\n');
+          Utils.copyText(allInfo);
+        },
 
-        const imgData = canvas.toDataURL('image/png');
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
+        downloadPublicWord() {
+          const infoLines = CONFIG.payment.infoItems
+            .map(item => `<p>${item.label}：${CONFIG.payment.public[item.key]}</p>`)
+            .join('\n');
 
-        const pdfWidth = 210;
-        const imgWidth = pdfWidth - 20;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          const htmlContent = `
+            <html>
+            <head><meta charset="UTF-8"><title>对公付款信息</title></head>
+            <body style="font-family:Microsoft YaHei;padding:40px;">
+              <h2>对公付款信息</h2>
+              ${infoLines}
+            </body>
+            </html>
+          `;
 
-        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-        pdf.save('对公付款信息.pdf');
-        showToast('PDF 下载开始');
-      } catch (err) {
-        showToast('❌ PDF 生成失败，请重试');
-        console.error('PDF 生成失败:', err);
-      } finally {
-        // 恢复样式
-        actionRow.style.display = actionDisplay;
-        copyTip.style.display = tipDisplay;
-        if (badge) badge.style.display = badgeDisplay;
-        card.style.backdropFilter = originalFilter;
-      }
-    }
+          const blob = new Blob(['\uFEFF' + htmlContent], { type: 'application/msword;charset=utf-8' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = '对公付款信息.doc';
+          link.click();
+          URL.revokeObjectURL(link.href);
+          Utils.showToast('Word 已生成，建议用 Office 打开');
+        }
+      };
 
-    // ==================== 初始化 ====================
-    window.onload = function () {
-      showPage('homePage');
-      buildPublicInfoCards();
-    };
+      // 启动应用
+      document.addEventListener('DOMContentLoaded', () => App.init());
+
+      window.App = App;
+    })();
   </script>
-
 </body>
 </html>
