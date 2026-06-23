@@ -530,16 +530,10 @@
         pageManager: new PageManager(),
 
         init() {
-          this.setFooterText();
           this.initHomePage();
           this.initPublicPageRegistration();
           this.initPrivatePageRegistration();
           this.pageManager.show('homePage');
-        },
-
-        setFooterText() {
-          document.getElementById('footerSite1').textContent = CONFIG.site.footer;
-          document.getElementById('footerSite2').textContent = CONFIG.site.footer;
         },
 
         initHomePage() {
