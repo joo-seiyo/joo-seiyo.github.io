@@ -371,13 +371,13 @@
     </div>
   </div>
 
-  <!-- 个人付款页 -->
+  <!-- 个人转账页 -->
   <div id="privatePage" class="page">
     <div class="card">
       <button type="button" class="back-btn" onclick="App.pageManager.show('homePage')">← 返回首页</button>
 
       <div class="badge">🔹 个人账户</div>
-      <h2 class="section-title">个人付款信息</h2>
+      <h2 class="section-title">代收代付信息</h2>
       <p class="subtitle">
         请使用微信扫描下方二维码完成付款。
       </p>
@@ -440,7 +440,7 @@
           subtitle: '请选择付款方式<br>系统将展示对应付款信息',
           buttons: [
             { text: '🏦 对公付款信息', pageId: 'publicPage', className: 'btn-public' },
-            { text: '💳 个人付款信息', pageId: 'privatePage', className: 'btn-private' }
+            { text: '💳 代收代付信息', pageId: 'privatePage', className: 'btn-private' }
           ]
         }
       };
