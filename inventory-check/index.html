@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>年度盘点数据确认单</title>
+    <style>
+        /* ===== 原有样式 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f2f4f8;
+            font-family: 'SimSun', '宋体', 'Times New Roman', serif;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #000000;
+            padding: 30px 30px 25px;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .main-header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 14px;
+            margin-bottom: 28px;
+        }
+
+        .main-header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: #000;
+            margin-bottom: 2px;
+        }
+
+        .main-header .sub {
+            font-size: 15px;
+            color: #333;
+            letter-spacing: 2px;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            border: 1px solid #000;
+            background: #fafbfc;
+            align-items: center;
+        }
+
+        .toolbar .label {
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .toolbar .btn-sm {
+            padding: 4px 14px;
+            border: 1px solid #000;
+            background: #f0f2f5;
+            font-family: inherit;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .toolbar .btn-sm:hover {
+            background: #d9dde3;
+        }
+
+        .toolbar .file-input {
+            display: none;
+        }
+
+        .toolbar .hint {
+            margin-left: auto;
+            font-size: 13px;
+            color: #555;
+        }
+
+        /* ===== 产品管理面板（模态框） ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 24px 28px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-box h2 {
+            font-size: 20px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .product-item input {
+            flex: 1;
+            border: none;
+            border-bottom: 1px solid #000;
+            padding: 4px 8px;
+            font-size: 15px;
+            font-family: inherit;
+            background: transparent;
+            outline: none;
+        }
+
+        .product-item .btn-del {
+            background: none;
+            border: 1px solid #000;
+            padding: 2px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .product-item .btn-del:hover {
+            background: #f0f0f0;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .modal-actions .btn {
+            padding: 6px 24px;
+            font-size: 14px;
+        }
+
+        /* ===== 其余样式不变 ===== */
+        .half-block {
+            margin-bottom: 40px;
+            border: 1px solid #000;
+            padding: 18px 20px 16px;
+            background: #fefefe;
+        }
+
+        .half-block .block-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+
+        .info-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 40px;
+            border: 1px solid #000;
+            padding: 8px 16px;
+            margin-bottom: 18px;
+            background: #fafbfc;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            color: #000;
+        }
+
+        .info-item label {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .info-item input,
+        .info-item select {
+            border: none;
+            border-bottom: 1px solid #000;
+            padding: 4px 8px;
+            font-size: 15px;
+            background: transparent;
+            font-family: inherit;
+            outline: none;
+            min-width: 130px;
+        }
+
+        .info-item input:disabled,
+        .info-item select:disabled {
+            border-bottom: 1px solid #888;
+            color: #333;
+        }
+
+        .table-wrap {
+            border: 1px solid #000;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 900px;
+        }
+
+        thead {
+            background: #f0f2f5;
+        }
+
+        thead th {
+            padding: 6px 4px;
+            border: 1px solid #000;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12.5px;
+            color: #000;
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 4px 3px;
+            border: 1px solid #000;
+            text-align: center;
+            color: #000;
+            vertical-align: middle;
+        }
+
+        .col-name {
+            text-align: left;
+            padding-left: 10px;
+            font-weight: 500;
+            min-width: 90px;
+            white-space: nowrap;
+        }
+
+        .col-sn {
+            font-weight: 500;
+            min-width: 35px;
+        }
+
+        .col-start-stock input {
+            width: 60px;
+            padding: 2px 2px;
+            border: none;
+            border-bottom: 1px solid #000;
+            text-align: center;
+            font-size: 13px;
+            background: transparent;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .col-start-stock input:disabled {
+            border-bottom: 1px solid #888;
+            color: #333;
+        }
+
+        .col-input input {
+            width: 48px;
+            padding: 2px 2px;
+            border: none;
+            border-bottom: 1px solid #000;
+            text-align: center;
+            font-size: 12px;
+            background: transparent;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .col-input input:disabled {
+            border-bottom: 1px solid #888;
+            color: #333;
+        }
+
+        .col-stock {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .footer-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 6px;
+            margin-bottom: 12px;
+        }
+
+        .summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 24px;
+            border: 1px solid #000;
+            padding: 6px 16px;
+            background: #fafbfc;
+        }
+
+        .summary .stat {
+            font-size: 14px;
+            color: #000;
+        }
+
+        .summary .stat .num {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 6px 20px;
+            border: 1px solid #000;
+            background: #f0f2f5;
+            color: #000;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.1s;
+            border-radius: 0;
+            font-weight: 500;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: #d9dde3;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #333;
+        }
+
+        .btn-warning {
+            background: #b8862c;
+            color: #fff;
+            border-color: #b8862c;
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            background: #9e7325;
+        }
+
+        .banner {
+            border: 1px solid #000;
+            padding: 8px 16px;
+            margin-top: 4px;
+            margin-bottom: 12px;
+            display: none;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+
+        .banner.show {
+            display: flex;
+        }
+
+        .banner-success {
+            background: #f0f7f2;
+        }
+
+        .banner-unlock {
+            background: #fcf4e8;
+            border-color: #b8862c;
+        }
+
+        .banner .btn {
+            margin-left: auto;
+        }
+
+        .signature-area {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 2px solid #000;
+            display: flex;
+            justify-content: flex-start;
+            gap: 60px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .signature-area .sign-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 15px;
+            color: #000;
+        }
+
+        .signature-area .sign-block .label {
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .stamp-box {
+            width: 100px;
+            height: 100px;
+            border: 2px dashed #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #777;
+            background: #fcfcfc;
+            margin-top: 4px;
+            user-select: none;
+        }
+
+        .year-summary {
+            border: 1px solid #000;
+            padding: 12px 20px;
+            margin-top: 18px;
+            background: #f4f7fc;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px 50px;
+            font-size: 15px;
+        }
+
+        .year-summary .stat {
+            font-weight: 600;
+        }
+
+        .year-summary .stat .num {
+            font-weight: 700;
+            font-size: 17px;
+        }
+
+        /* ===== 打印样式 ===== */
+        @media print {
+            @page {
+                margin: 10mm 8mm;
+                size: A4 landscape;
+            }
+
+            body {
+                background: #fff;
+                padding: 0;
+                margin: 0;
+            }
+
+            .container {
+                border: 1px solid #000;
+                padding: 12px 15px 20px;
+                box-shadow: none;
+                max-width: 100%;
+                border-radius: 0;
+            }
+
+            .toolbar,
+            .btn,
+            .actions,
+            .banner,
+            .banner.show,
+            .modal-overlay {
+                display: none !important;
+            }
+
+            .table-wrap {
+                border: 1px solid #000;
+                overflow: visible !important;
+            }
+
+            table {
+                font-size: 10.5px;
+                min-width: 100%;
+                width: 100%;
+                border-collapse: collapse;
+                page-break-inside: avoid;
+            }
+
+            thead th {
+                padding: 4px 3px;
+                font-size: 10px;
+                background: #f0f2f5 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            tbody td {
+                padding: 3px 2px;
+                font-size: 10px;
+            }
+
+            .col-input input,
+            .col-start-stock input {
+                border: none;
+                border-bottom: 1px solid #000;
+                background: transparent !important;
+                padding: 0 2px;
+                font-size: 10px;
+                width: 40px;
+                color: #000;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .col-input input:disabled,
+            .col-start-stock input:disabled {
+                border-bottom: 1px solid #000;
+                background: transparent !important;
+                color: #000;
+                opacity: 1;
+            }
+
+            .summary {
+                border: 1px solid #000;
+                padding: 4px 12px;
+                font-size: 11px;
+                background: #fafbfc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .summary .stat {
+                font-size: 11px;
+            }
+            .summary .stat .num {
+                font-size: 12px;
+            }
+
+            .info-bar {
+                border: 1px solid #000;
+                padding: 6px 12px;
+                font-size: 12px;
+                background: #fafbfc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .info-item {
+                font-size: 12px;
+            }
+
+            .info-item input,
+            .info-item select {
+                border-bottom: 1px solid #000;
+                background: transparent !important;
+                padding: 0 4px;
+                font-size: 12px;
+                color: #000;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .info-item input:disabled,
+            .info-item select:disabled {
+                border-bottom: 1px solid #000;
+                background: transparent !important;
+                color: #000;
+                opacity: 1;
+            }
+
+            .stamp-box {
+                width: 80px;
+                height: 80px;
+                border: 2px dashed #000;
+                background: #fff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .signature-area {
+                border-top: 2px solid #000;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+
+            .year-summary {
+                border: 1px solid #000;
+                padding: 8px 16px;
+                margin-top: 12px;
+                background: #f4f7fc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                font-size: 13px;
+            }
+
+            .year-summary .stat .num {
+                font-size: 15px;
+            }
+
+            .main-header {
+                border-bottom: 2px solid #000;
+                padding-bottom: 8px;
+                margin-bottom: 12px;
+            }
+
+            .main-header h1 {
+                font-size: 20px;
+                letter-spacing: 4px;
+            }
+            .main-header .sub {
+                font-size: 13px;
+            }
+
+            .half-block .block-title {
+                font-size: 16px;
+                padding-bottom: 4px;
+                margin-bottom: 10px;
+            }
+
+            .half-block {
+                page-break-after: always;
+                border: 1px solid #000;
+                padding: 12px 12px 10px;
+                margin-bottom: 0;
+            }
+
+            .half-block:last-child {
+                page-break-after: avoid;
+            }
+
+            table,
+            tbody,
+            tr {
+                page-break-inside: avoid;
+            }
+
+            .footer-actions .actions {
+                display: none !important;
+            }
+
+            .info-item .value {
+                border-bottom: 1px solid #000;
+                padding: 0 4px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .container {
+                padding: 16px 12px;
+            }
+            .info-bar {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .info-item input,
+            .info-item select {
+                min-width: 120px;
+                width: 100%;
+            }
+            .footer-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .summary {
+                justify-content: center;
+            }
+            .actions {
+                justify-content: center;
+            }
+            .signature-area {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .stamp-box {
+                width: 80px;
+                height: 80px;
+            }
+            table {
+                font-size: 11px;
+                min-width: 800px;
+            }
+            .col-input input {
+                width: 40px;
+                font-size: 11px;
+            }
+            .banner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .banner .btn {
+                margin-left: 0;
+            }
+            .half-block {
+                padding: 12px 10px;
+            }
+            .toolbar .hint {
+                margin-left: 0;
+                width: 100%;
+            }
+            .modal-box {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="app">
+
+        <div class="main-header">
+            <h1>年度产品盘点数据确认单</h1>
+            <div class="sub">—— 分上半年 / 下半年 独立确认 ——</div>
+        </div>
+
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <span class="label">📂 数据管理：</span>
+            <button class="btn-sm" @click="exportData">📥 导出数据</button>
+            <button class="btn-sm" @click="fileInputRef.click()">📤 导入数据</button>
+            <input type="file" class="file-input" accept=".json" ref="fileInputRef" @change="importData" />
+            <button class="btn-sm" @click="openProductManager">📋 管理产品</button>
+            <span class="hint">💡 数据自动保存在浏览器本地 · 导出JSON可永久备份</span>
+        </div>
+
+        <!-- ===== 产品管理模态框 ===== -->
+        <div class="modal-overlay" :class="{ active: showProductManager }" @click.self="closeProductManager">
+            <div class="modal-box">
+                <h2>管理产品列表</h2>
+                <p style="font-size:14px;color:#555;margin-bottom:12px;">修改产品名称、添加或删除产品。修改后点击“保存”生效。</p>
+                <div v-for="(item, idx) in editingProducts" :key="idx" class="product-item">
+                    <input type="text" v-model="item.name" placeholder="输入产品名称" />
+                    <button class="btn-del" @click="removeProduct(idx)" :disabled="editingProducts.length <= 1">删除</button>
+                </div>
+                <div style="margin-top:8px;">
+                    <button class="btn btn-sm" @click="addProduct" style="padding:4px 16px;">+ 添加产品</button>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn" @click="saveProductChanges">保存</button>
+                    <button class="btn" @click="closeProductManager">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 上半年 ===== -->
+        <div class="half-block">
+            <div class="block-title">上半年盘点（1月 – 6月）</div>
+
+            <div class="info-bar">
+                <div class="info-item">
+                    <label>盘点单位</label>
+                    <input type="text" v-model="half1.department" :disabled="half1.submitted" placeholder="填写盘点部门" @input="saveToLocal" />
+                </div>
+                <div class="info-item">
+                    <label>盘点日期</label>
+                    <input type="date" v-model="half1.inventoryDate" :disabled="half1.submitted" @change="saveToLocal" />
+                </div>
+                <div class="info-item">
+                    <label>半年期</label>
+                    <select v-model="half1.period" :disabled="half1.submitted" @change="saveToLocal">
+                        <option value="2026-01">2026年上半年</option>
+                        <option value="2027-01">2027年上半年</option>
+                        <option value="2028-01">2028年上半年</option>
+                    </select>
+                </div>
+                <div class="info-item" style="border-left:1px solid #ccc;padding-left:16px;">
+                    <label>状态</label>
+                    <span style="border-bottom:1px solid #000;padding:4px 12px;font-weight:600;">
+                        {{ half1.submitted ? '已提交' : '待提交' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="min-width:35px;">#</th>
+                            <th rowspan="2" style="min-width:90px;text-align:left;padding-left:10px;">产品名称</th>
+                            <th rowspan="2" style="min-width:70px;">上期库存</th>
+                            <th colspan="3">1月</th>
+                            <th colspan="3">2月</th>
+                            <th colspan="3">3月</th>
+                            <th colspan="3">4月</th>
+                            <th colspan="3">5月</th>
+                            <th colspan="3">6月</th>
+                        </tr>
+                        <tr>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, idx) in half1.products" :key="item.id">
+                            <td class="col-sn">{{ idx + 1 }}</td>
+                            <td class="col-name">{{ item.name }}</td>
+                            <td class="col-start-stock">
+                                <input type="number" v-model.number="item.startStock" :disabled="half1.submitted" min="0" step="1" @input="onChangeHalf1" />
+                            </td>
+                            <template v-for="(month, mIdx) in item.months" :key="mIdx">
+                                <td class="col-input">
+                                    <input type="number" v-model.number="month.consume" :disabled="half1.submitted" min="0" step="1" @input="onChangeHalf1" />
+                                </td>
+                                <td class="col-input">
+                                    <input type="number" v-model.number="month.arrive" :disabled="half1.submitted" min="0" step="1" @input="onChangeHalf1" />
+                                </td>
+                                <td class="col-stock" :style="{background: mIdx === 5 ? '#f6f8fc' : 'transparent', fontWeight: mIdx === 5 ? 700 : 600}">
+                                    {{ month.stock }}
+                                </td>
+                            </template>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="footer-actions">
+                <div class="summary">
+                    <div class="stat">产品总数：<span class="num">{{ half1.products.length }}</span></div>
+                    <div class="stat">半年度总消耗：<span class="num">{{ half1.totalConsume }}</span></div>
+                    <div class="stat">半年度总到货：<span class="num">{{ half1.totalArrive }}</span></div>
+                    <div class="stat">6月末库存总额：<span class="num">{{ half1.totalStock }}</span></div>
+                </div>
+                <div class="actions">
+                    <button class="btn" @click="resetHalf('half1')" :disabled="half1.submitted">重置</button>
+                    <button class="btn btn-primary" @click="submitHalf('half1')" :disabled="half1.submitted">提交审核</button>
+                </div>
+            </div>
+
+            <div class="banner banner-success" :class="{ show: half1.submitted && !half1.unlockMode }">
+                <span style="font-weight:700;">✓</span>
+                <span>上半年数据已于 <strong>{{ half1.submitTime }}</strong> 提交，已锁定。</span>
+                <button class="btn btn-warning" @click="enableUnlock('half1')" style="margin-left:auto;">解锁修改</button>
+            </div>
+
+            <div class="banner banner-unlock" :class="{ show: half1.unlockMode }">
+                <span style="font-weight:700;">🔓</span>
+                <span>输入解锁密码：</span>
+                <input type="password" v-model="half1.unlockPassword" placeholder="密码" style="border:1px solid #000;padding:4px 8px;font-family:inherit;width:120px;" />
+                <button class="btn btn-primary" @click="unlockHalf('half1')">确认</button>
+                <button class="btn" @click="cancelUnlock('half1')">取消</button>
+            </div>
+
+            <div class="signature-area">
+                <div class="sign-block">
+                    <span class="label">盘点单位（盖章）</span>
+                    <div class="stamp-box">盖章处</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 下半年 ===== -->
+        <div class="half-block">
+            <div class="block-title">下半年盘点（7月 – 12月）</div>
+
+            <div class="info-bar">
+                <div class="info-item">
+                    <label>盘点单位</label>
+                    <input type="text" v-model="half2.department" :disabled="half2.submitted" placeholder="填写盘点部门" @input="saveToLocal" />
+                </div>
+                <div class="info-item">
+                    <label>盘点日期</label>
+                    <input type="date" v-model="half2.inventoryDate" :disabled="half2.submitted" @change="saveToLocal" />
+                </div>
+                <div class="info-item">
+                    <label>半年期</label>
+                    <select v-model="half2.period" :disabled="half2.submitted" @change="saveToLocal">
+                        <option value="2026-07">2026年下半年</option>
+                        <option value="2027-07">2027年下半年</option>
+                        <option value="2028-07">2028年下半年</option>
+                    </select>
+                </div>
+                <div class="info-item" style="border-left:1px solid #ccc;padding-left:16px;">
+                    <label>状态</label>
+                    <span style="border-bottom:1px solid #000;padding:4px 12px;font-weight:600;">
+                        {{ half2.submitted ? '已提交' : '待提交' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="min-width:35px;">#</th>
+                            <th rowspan="2" style="min-width:90px;text-align:left;padding-left:10px;">产品名称</th>
+                            <th rowspan="2" style="min-width:70px;">上期库存</th>
+                            <th colspan="3">7月</th>
+                            <th colspan="3">8月</th>
+                            <th colspan="3">9月</th>
+                            <th colspan="3">10月</th>
+                            <th colspan="3">11月</th>
+                            <th colspan="3">12月</th>
+                        </tr>
+                        <tr>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                            <th>消耗</th><th>到货</th><th style="background:#eef2f7;">期末</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, idx) in half2.products" :key="item.id">
+                            <td class="col-sn">{{ idx + 1 }}</td>
+                            <td class="col-name">{{ item.name }}</td>
+                            <td class="col-start-stock">
+                                <input type="number" v-model.number="item.startStock" :disabled="half2.submitted" min="0" step="1" @input="onChangeHalf2" />
+                            </td>
+                            <template v-for="(month, mIdx) in item.months" :key="mIdx">
+                                <td class="col-input">
+                                    <input type="number" v-model.number="month.consume" :disabled="half2.submitted" min="0" step="1" @input="onChangeHalf2" />
+                                </td>
+                                <td class="col-input">
+                                    <input type="number" v-model.number="month.arrive" :disabled="half2.submitted" min="0" step="1" @input="onChangeHalf2" />
+                                </td>
+                                <td class="col-stock" :style="{background: mIdx === 5 ? '#f6f8fc' : 'transparent', fontWeight: mIdx === 5 ? 700 : 600}">
+                                    {{ month.stock }}
+                                </td>
+                            </template>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="footer-actions">
+                <div class="summary">
+                    <div class="stat">产品总数：<span class="num">{{ half2.products.length }}</span></div>
+                    <div class="stat">半年度总消耗：<span class="num">{{ half2.totalConsume }}</span></div>
+                    <div class="stat">半年度总到货：<span class="num">{{ half2.totalArrive }}</span></div>
+                    <div class="stat">12月末库存总额：<span class="num">{{ half2.totalStock }}</span></div>
+                </div>
+                <div class="actions">
+                    <button class="btn" @click="resetHalf('half2')" :disabled="half2.submitted">重置</button>
+                    <button class="btn btn-primary" @click="submitHalf('half2')" :disabled="half2.submitted">提交审核</button>
+                </div>
+            </div>
+
+            <div class="banner banner-success" :class="{ show: half2.submitted && !half2.unlockMode }">
+                <span style="font-weight:700;">✓</span>
+                <span>下半年数据已于 <strong>{{ half2.submitTime }}</strong> 提交，已锁定。</span>
+                <button class="btn btn-warning" @click="enableUnlock('half2')" style="margin-left:auto;">解锁修改</button>
+            </div>
+
+            <div class="banner banner-unlock" :class="{ show: half2.unlockMode }">
+                <span style="font-weight:700;">🔓</span>
+                <span>输入解锁密码：</span>
+                <input type="password" v-model="half2.unlockPassword" placeholder="密码" style="border:1px solid #000;padding:4px 8px;font-family:inherit;width:120px;" />
+                <button class="btn btn-primary" @click="unlockHalf('half2')">确认</button>
+                <button class="btn" @click="cancelUnlock('half2')">取消</button>
+            </div>
+
+            <div class="signature-area">
+                <div class="sign-block">
+                    <span class="label">盘点单位（盖章）</span>
+                    <div class="stamp-box">盖章处</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 全年汇总 ===== -->
+        <div class="year-summary" v-if="half1.submitted && half2.submitted">
+            <div style="width:100%;font-weight:700;font-size:18px;margin-bottom:6px;">📊 年度汇总（全年）</div>
+            <div class="stat">全年总消耗：<span class="num">{{ yearTotalConsume }}</span></div>
+            <div class="stat">全年总到货：<span class="num">{{ yearTotalArrive }}</span></div>
+            <div class="stat">12月末库存总额：<span class="num">{{ yearEndStock }}</span></div>
+            <div class="stat" style="border-left:1px solid #000;padding-left:20px;">
+                盘点年度：<span style="font-weight:700;">{{ inventoryYear }}</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js">
+    </script>
+
+    <script>
+        const { createApp, ref, computed, onMounted, watch } = Vue;
+
+        const app = createApp({
+            setup() {
+                // ---------- 默认产品列表 ----------
+                const defaultProductNames = [
+                    '智能传感器 A1',
+                    '无线网关 GW-2',
+                    '环境监测模块 EM-5',
+                    '智能摄像头 CAM-8',
+                    '数据采集器 DAQ-3',
+                    '工业电源 PS-12',
+                    '信号中继器 RP-7'
+                ];
+
+                // ---------- 工具函数：创建半年数据 ----------
+                const createHalfData = (names) => {
+                    const products = names.map((name, idx) => ({
+                        id: idx + 1,
+                        name: name,
+                        startStock: 0,
+                        months: Array.from({ length: 6 }, () => ({
+                            consume: 0,
+                            arrive: 0,
+                            stock: 0
+                        }))
+                    }));
+                    return {
+                        products,
+                        department: '',
+                        inventoryDate: '',
+                        period: '',
+                        submitted: false,
+                        submitTime: '',
+                        unlockMode: false,
+                        unlockPassword: '',
+                        totalConsume: 0,
+                        totalArrive: 0,
+                        totalStock: 0,
+                    };
+                };
+
+                // ---------- 响应式数据 ----------
+                const half1 = ref(createHalfData(defaultProductNames));
+                const half2 = ref(createHalfData(defaultProductNames));
+                const fileInputRef = ref(null);
+
+                // 产品管理相关
+                const showProductManager = ref(false);
+                const editingProducts = ref([]); // 临时编辑列表 [{ name: '...' }]
+
+                // ---------- 设置默认日期和半年期 ----------
+                const setDefaultMeta = () => {
+                    const today = new Date();
+                    const yyyy = today.getFullYear();
+                    const mm = String(today.getMonth() + 1).padStart(2, '0');
+                    const dd = String(today.getDate()).padStart(2, '0');
+                    const dateStr = `${yyyy}-${mm}-${dd}`;
+                    if (!half1.value.inventoryDate) half1.value.inventoryDate = dateStr;
+                    if (!half1.value.period) {
+                        half1.value.period = `${yyyy}-01`;
+                    }
+                    if (!half2.value.inventoryDate) half2.value.inventoryDate = dateStr;
+                    if (!half2.value.period) {
+                        half2.value.period = `${yyyy}-07`;
+                    }
+                };
+
+                // ---------- 核心计算 ----------
+                const recalcHalf = (half) => {
+                    half.products.forEach(item => {
+                        for (let m = 0; m < 6; m++) {
+                            const month = item.months[m];
+                            if (month.consume === undefined || isNaN(month.consume)) month.consume = 0;
+                            if (month.arrive === undefined || isNaN(month.arrive)) month.arrive = 0;
+                            if (m === 0) {
+                                month.stock = (item.startStock || 0) + month.arrive - month.consume;
+                            } else {
+                                const prev = item.months[m - 1];
+                                month.stock = prev.stock + month.arrive - month.consume;
+                            }
+                            if (month.stock < 0) month.stock = 0;
+                        }
+                    });
+                    updateStats(half);
+                };
+
+                const updateStats = (half) => {
+                    let totalConsume = 0,
+                        totalArrive = 0,
+                        totalStock = 0;
+                    half.products.forEach(p => {
+                        p.months.forEach(m => {
+                            totalConsume += (m.consume || 0);
+                            totalArrive += (m.arrive || 0);
+                        });
+                        const last = p.months[5];
+                        if (last) totalStock += (last.stock || 0);
+                    });
+                    half.totalConsume = totalConsume;
+                    half.totalArrive = totalArrive;
+                    half.totalStock = totalStock;
+                };
+
+                const onChangeHalf1 = () => { recalcHalf(half1.value);
+                    saveToLocal(); };
+                const onChangeHalf2 = () => { recalcHalf(half2.value);
+                    saveToLocal(); };
+
+                // ---------- 本地存储 ----------
+                const STORAGE_KEY = 'inventory_data_v3';
+
+                const saveToLocal = () => {
+                    const data = {
+                        half1: {
+                            products: half1.value.products,
+                            department: half1.value.department,
+                            inventoryDate: half1.value.inventoryDate,
+                            period: half1.value.period,
+                            submitted: half1.value.submitted,
+                            submitTime: half1.value.submitTime,
+                        },
+                        half2: {
+                            products: half2.value.products,
+                            department: half2.value.department,
+                            inventoryDate: half2.value.inventoryDate,
+                            period: half2.value.period,
+                            submitted: half2.value.submitted,
+                            submitTime: half2.value.submitTime,
+                        }
+                    };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                };
+
+                const loadFromLocal = () => {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (!raw) return false;
+                    try {
+                        const data = JSON.parse(raw);
+                        if (data.half1) {
+                            const h1 = data.half1;
+                            half1.value.products = h1.products.map((p, idx) => {
+                                if (!p.months || p.months.length !== 6) {
+                                    p.months = Array.from({ length: 6 }, () => ({ consume: 0, arrive: 0,
+                                        stock: 0 }));
+                                }
+                                p.months.forEach(m => {
+                                    if (m.consume === undefined) m.consume = 0;
+                                    if (m.arrive === undefined) m.arrive = 0;
+                                    if (m.stock === undefined) m.stock = 0;
+                                });
+                                return p;
+                            });
+                            half1.value.department = h1.department || '';
+                            half1.value.inventoryDate = h1.inventoryDate || '';
+                            half1.value.period = h1.period || '';
+                            half1.value.submitted = h1.submitted || false;
+                            half1.value.submitTime = h1.submitTime || '';
+                            half1.value.unlockMode = false;
+                            half1.value.unlockPassword = '';
+                        }
+                        if (data.half2) {
+                            const h2 = data.half2;
+                            half2.value.products = h2.products.map((p, idx) => {
+                                if (!p.months || p.months.length !== 6) {
+                                    p.months = Array.from({ length: 6 }, () => ({ consume: 0, arrive: 0,
+                                        stock: 0 }));
+                                }
+                                p.months.forEach(m => {
+                                    if (m.consume === undefined) m.consume = 0;
+                                    if (m.arrive === undefined) m.arrive = 0;
+                                    if (m.stock === undefined) m.stock = 0;
+                                });
+                                return p;
+                            });
+                            half2.value.department = h2.department || '';
+                            half2.value.inventoryDate = h2.inventoryDate || '';
+                            half2.value.period = h2.period || '';
+                            half2.value.submitted = h2.submitted || false;
+                            half2.value.submitTime = h2.submitTime || '';
+                            half2.value.unlockMode = false;
+                            half2.value.unlockPassword = '';
+                        }
+                        setDefaultMeta();
+                        recalcHalf(half1.value);
+                        recalcHalf(half2.value);
+                        return true;
+                    } catch (e) {
+                        console.warn('数据加载失败', e);
+                        return false;
+                    }
+                };
+
+                // ---------- 产品管理功能 ----------
+                const openProductManager = () => {
+                    // 复制当前产品名称列表
+                    editingProducts.value = half1.value.products.map(p => ({ name: p.name }));
+                    showProductManager.value = true;
+                };
+
+                const closeProductManager = () => {
+                    showProductManager.value = false;
+                };
+
+                const addProduct = () => {
+                    editingProducts.value.push({ name: '新产品' });
+                };
+
+                const removeProduct = (idx) => {
+                    if (editingProducts.value.length <= 1) {
+                        alert('至少保留一个产品');
+                        return;
+                    }
+                    if (!confirm(`确定删除产品“${editingProducts.value[idx].name}”吗？其所有数据将被移除。`)) return;
+                    editingProducts.value.splice(idx, 1);
+                };
+
+                const saveProductChanges = () => {
+                    // 过滤空名称
+                    const names = editingProducts.value.map(item => item.name.trim()).filter(name => name !== '');
+                    if (names.length === 0) {
+                        alert('至少需要一个产品名称');
+                        return;
+                    }
+                    // 检查重复名称
+                    const unique = new Set(names);
+                    if (unique.size !== names.length) {
+                        alert('产品名称不能重复，请修改');
+                        return;
+                    }
+
+                    // 构建新旧名称映射，保留数据
+                    const oldProducts = half1.value.products;
+                    const newProducts = names.map((name, idx) => {
+                        // 如果旧数据存在且索引相同，则保留数据，否则初始化
+                        if (idx < oldProducts.length) {
+                            // 名称可能变了，但数据保留
+                            return {
+                                id: idx + 1,
+                                name: name,
+                                startStock: oldProducts[idx].startStock || 0,
+                                months: oldProducts[idx].months.map(m => ({ ...m }))
+                            };
+                        } else {
+                            // 新增产品
+                            return {
+                                id: idx + 1,
+                                name: name,
+                                startStock: 0,
+                                months: Array.from({ length: 6 }, () => ({ consume: 0, arrive: 0, stock: 0 }))
+                            };
+                        }
+                    });
+                    // 如果旧产品比新产品多，舍弃多余
+                    // 更新 half1 和 half2
+                    half1.value.products = newProducts.map(p => ({ ...p }));
+                    half2.value.products = newProducts.map(p => ({ ...p }));
+
+                    recalcHalf(half1.value);
+                    recalcHalf(half2.value);
+                    saveToLocal();
+                    closeProductManager();
+                    alert('产品列表已更新，数据已保留。');
+                };
+
+                // ---------- 导出 / 导入 ----------
+                const exportData = () => {
+                    saveToLocal();
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (!raw) {
+                        alert('暂无数据可导出');
+                        return;
+                    }
+                    const blob = new Blob([raw], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `盘点数据_${new Date().toISOString().slice(0,10)}.json`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                };
+
+                const importData = (event) => {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            if (!data.half1 || !data.half2) {
+                                alert('无效的备份文件');
+                                return;
+                            }
+                            if (!confirm('导入将覆盖当前所有数据，确定继续吗？')) return;
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                            loadFromLocal();
+                            alert('数据导入成功！');
+                        } catch (err) {
+                            alert('文件解析失败，请检查格式');
+                        }
+                    };
+                    reader.readAsText(file);
+                    event.target.value = '';
+                };
+
+                // ---------- 提交 / 解锁 / 重置 ----------
+                const submitHalf = (which) => {
+                    const half = which === 'half1' ? half1.value : half2.value;
+                    if (half.submitted) return;
+                    let hasEmpty = false;
+                    half.products.forEach(p => {
+                        p.months.forEach(m => {
+                            if (m.consume === undefined || isNaN(m.consume) ||
+                                m.arrive === undefined || isNaN(m.arrive)) {
+                                hasEmpty = true;
+                            }
+                        });
+                    });
+                    if (hasEmpty) {
+                        alert('请确保所有月份的消耗和到货数量均已填写！');
+                        return;
+                    }
+                    if (!confirm(`确认提交${which === 'half1' ? '上半年' : '下半年'}盘点数据吗？提交后将锁定。`)) return;
+                    half.submitted = true;
+                    const now = new Date();
+                    half.submitTime =
+                        `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+                    half.unlockMode = false;
+                    half.unlockPassword = '';
+                    saveToLocal();
+                };
+
+                const enableUnlock = (which) => {
+                    const half = which === 'half1' ? half1.value : half2.value;
+                    half.unlockMode = true;
+                    half.unlockPassword = '';
+                };
+
+                const cancelUnlock = (which) => {
+                    const half = which === 'half1' ? half1.value : half2.value;
+                    half.unlockMode = false;
+                    half.unlockPassword = '';
+                };
+
+                const unlockHalf = (which) => {
+                    const half = which === 'half1' ? half1.value : half2.value;
+                    const PASSWORD = 'admin';
+                    if (half.unlockPassword === PASSWORD) {
+                        half.submitted = false;
+                        half.unlockMode = false;
+                        half.unlockPassword = '';
+                        saveToLocal();
+                        alert('解锁成功！数据已恢复为可编辑状态。');
+                    } else {
+                        alert('密码错误，请重新输入。');
+                        half.unlockPassword = '';
+                    }
+                };
+
+                const resetHalf = (which) => {
+                    const half = which === 'half1' ? half1.value : half2.value;
+                    if (half.submitted) {
+                        if (!confirm(`该半年已提交，重置将丢失所有修改并恢复初始数据，确定吗？`)) return;
+                    }
+                    half.products.forEach(item => {
+                        item.startStock = 0;
+                        item.months.forEach(m => {
+                            m.consume = 0;
+                            m.arrive = 0;
+                            m.stock = 0;
+                        });
+                    });
+                    recalcHalf(half);
+                    half.submitted = false;
+                    half.submitTime = '';
+                    half.unlockMode = false;
+                    half.unlockPassword = '';
+                    saveToLocal();
+                };
+
+                // ---------- 全年汇总 ----------
+                const yearTotalConsume = computed(() => {
+                    return (half1.value.totalConsume || 0) + (half2.value.totalConsume || 0);
+                });
+                const yearTotalArrive = computed(() => {
+                    return (half1.value.totalArrive || 0) + (half2.value.totalArrive || 0);
+                });
+                const yearEndStock = computed(() => {
+                    return half2.value.totalStock || 0;
+                });
+                const inventoryYear = computed(() => {
+                    if (half1.value.period) return half1.value.period.slice(0, 4);
+                    return new Date().getFullYear();
+                });
+
+                // ---------- 联动：上半年提交后更新下半年上期库存 ----------
+                watch(() => half1.value.submitted, (newVal) => {
+                    if (newVal) {
+                        half2.value.products.forEach((item, idx) => {
+                            const h1Item = half1.value.products[idx];
+                            if (h1Item && h1Item.months[5].stock !== undefined) {
+                                item.startStock = h1Item.months[5].stock;
+                            }
+                        });
+                        recalcHalf(half2.value);
+                        saveToLocal();
+                    }
+                }, { immediate: true });
+
+                watch(() => half1.value.products, () => {
+                    if (half1.value.submitted) {
+                        half2.value.products.forEach((item, idx) => {
+                            const h1Item = half1.value.products[idx];
+                            if (h1Item && h1Item.months[5].stock !== undefined) {
+                                item.startStock = h1Item.months[5].stock;
+                            }
+                        });
+                        recalcHalf(half2.value);
+                        saveToLocal();
+                    }
+                }, { deep: true });
+
+                // ---------- 初始化 ----------
+                onMounted(() => {
+                    const loaded = loadFromLocal();
+                    if (!loaded) {
+                        setDefaultMeta();
+                        recalcHalf(half1.value);
+                        recalcHalf(half2.value);
+                        saveToLocal();
+                    }
+                    if (half1.value.submitted) {
+                        half2.value.products.forEach((item, idx) => {
+                            const h1Item = half1.value.products[idx];
+                            if (h1Item && h1Item.months[5].stock !== undefined) {
+                                item.startStock = h1Item.months[5].stock;
+                            }
+                        });
+                        recalcHalf(half2.value);
+                    }
+                });
+
+                return {
+                    half1,
+                    half2,
+                    fileInputRef,
+                    showProductManager,
+                    editingProducts,
+                    openProductManager,
+                    closeProductManager,
+                    addProduct,
+                    removeProduct,
+                    saveProductChanges,
+                    onChangeHalf1,
+                    onChangeHalf2,
+                    saveToLocal,
+                    exportData,
+                    importData,
+                    submitHalf,
+                    enableUnlock,
+                    cancelUnlock,
+                    unlockHalf,
+                    resetHalf,
+                    yearTotalConsume,
+                    yearTotalArrive,
+                    yearEndStock,
+                    inventoryYear,
+                };
+            },
+        });
+
+        app.mount('#app');
+    </script>
+
+</body>
+</html>
