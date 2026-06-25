@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>盘点数据确认单</title>
     <style>
-        /* ===== 原有样式 ===== */
+        /* ===== 基础样式 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -171,7 +171,7 @@
             font-size: 14px;
         }
 
-        /* ===== 其余样式不变 ===== */
+        /* ===== 主区块 ===== */
         .half-block {
             margin-bottom: 40px;
             border: 1px solid #000;
@@ -447,14 +447,15 @@
             letter-spacing: 1px;
         }
 
+        /* ===== 盖章处（屏幕显示） ===== */
         .stamp-box {
-            width: 100px;
-            height: 100px;
+            width: 180px;
+            height: 180px;
             border: 2px dashed #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 16px;
             color: #777;
             background: #fcfcfc;
             margin-top: 4px;
@@ -484,7 +485,7 @@
         /* ===== 打印样式 ===== */
         @media print {
             @page {
-                margin: 10mm 8mm;
+                margin: 8mm 6mm;
                 size: A4 landscape;
             }
 
@@ -496,7 +497,7 @@
 
             .container {
                 border: 1px solid #000;
-                padding: 12px 15px 20px;
+                padding: 10px 10px 16px;
                 box-shadow: none;
                 max-width: 100%;
                 border-radius: 0;
@@ -517,148 +518,193 @@
             }
 
             table {
-                font-size: 10.5px;
+                font-size: 10px;
                 min-width: 100%;
                 width: 100%;
                 border-collapse: collapse;
                 page-break-inside: avoid;
+                table-layout: fixed;
             }
 
             thead th {
-                padding: 4px 3px;
-                font-size: 10px;
+                padding: 4px 2px;
+                font-size: 9px;
                 background: #f0f2f5 !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+                word-break: break-word;
+                overflow: hidden;
+                text-align: center;
             }
 
             tbody td {
-                padding: 3px 2px;
-                font-size: 10px;
+                padding: 4px 2px;
+                font-size: 9px;
+                word-break: break-word;
+                overflow: hidden;
+                text-align: center !important;
+                vertical-align: middle;
             }
 
-            .col-input input,
-            .col-start-stock input {
-                border: none;
-                border-bottom: 1px solid #000;
-                background: transparent !important;
-                padding: 0 2px;
-                font-size: 10px;
-                width: 40px;
-                color: #000;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .col-input input:disabled,
-            .col-start-stock input:disabled {
-                border-bottom: 1px solid #000;
-                background: transparent !important;
-                color: #000;
-                opacity: 1;
-            }
-
-            .summary {
-                border: 1px solid #000;
-                padding: 4px 12px;
-                font-size: 11px;
-                background: #fafbfc !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .summary .stat {
-                font-size: 11px;
-            }
-            .summary .stat .num {
-                font-size: 12px;
-            }
-
-            .info-bar {
-                border: 1px solid #000;
-                padding: 6px 12px;
-                font-size: 12px;
-                background: #fafbfc !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .info-item {
-                font-size: 12px;
-            }
-
+            /* ---- 打印时彻底隐藏下划线，且自适应宽度 ---- */
             .info-item input,
             .info-item select {
-                border-bottom: 1px solid #000;
+                border: none !important;
                 background: transparent !important;
-                padding: 0 4px;
-                font-size: 12px;
+                padding: 0 3px;
+                font-size: 10px;
                 color: #000;
+                width: auto;
+                min-width: 80px;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
 
             .info-item input:disabled,
             .info-item select:disabled {
-                border-bottom: 1px solid #000;
+                border: none !important;
                 background: transparent !important;
                 color: #000;
                 opacity: 1;
             }
 
+            /* ---- 打印时所有输入框无边框，数据居中 ---- */
+            .col-input input,
+            .col-start-stock input {
+                border: none !important;
+                background: transparent !important;
+                padding: 0 1px;
+                font-size: 9px;
+                width: 40px;
+                max-width: 40px;
+                min-width: 30px;
+                color: #000;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                text-align: center;
+            }
+
+            .col-input input:disabled,
+            .col-start-stock input:disabled {
+                border: none !important;
+                background: transparent !important;
+                color: #000;
+                opacity: 1;
+            }
+
+            .col-stock {
+                font-size: 9px;
+                font-weight: 600;
+                text-align: center;
+            }
+
+            /* ---- 产品名称居中，允许换行 ---- */
+            .col-name {
+                font-size: 9px;
+                padding-left: 2px;
+                min-width: 70px;
+                word-break: break-word;
+                white-space: normal !important;
+                text-align: center !important;
+            }
+
+            .col-sn {
+                font-size: 9px;
+                min-width: 25px;
+                text-align: center;
+            }
+
+            .summary {
+                border: 1px solid #000;
+                padding: 3px 8px;
+                font-size: 9px;
+                background: #fafbfc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .summary .stat {
+                font-size: 9px;
+            }
+            .summary .stat .num {
+                font-size: 10px;
+            }
+
+            .info-bar {
+                border: 1px solid #000;
+                padding: 4px 8px;
+                font-size: 11px;
+                background: #fafbfc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px 16px;
+            }
+
+            .info-item {
+                font-size: 11px;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                flex-wrap: wrap;
+            }
+
+            /* ===== 打印盖章处放大 ===== */
             .stamp-box {
-                width: 80px;
-                height: 80px;
+                width: 160px;
+                height: 160px;
                 border: 2px dashed #000;
                 background: #fff !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+                font-size: 14px;
             }
 
             .signature-area {
                 border-top: 2px solid #000;
-                margin-top: 10px;
-                padding-top: 10px;
+                margin-top: 8px;
+                padding-top: 8px;
             }
 
             .year-summary {
                 border: 1px solid #000;
-                padding: 8px 16px;
-                margin-top: 12px;
+                padding: 6px 12px;
+                margin-top: 10px;
                 background: #f4f7fc !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
-                font-size: 13px;
+                font-size: 11px;
             }
 
             .year-summary .stat .num {
-                font-size: 15px;
+                font-size: 13px;
             }
 
             .main-header {
                 border-bottom: 2px solid #000;
-                padding-bottom: 8px;
-                margin-bottom: 12px;
+                padding-bottom: 6px;
+                margin-bottom: 10px;
             }
 
             .main-header h1 {
-                font-size: 20px;
-                letter-spacing: 4px;
+                font-size: 18px;
+                letter-spacing: 3px;
             }
             .main-header .sub {
-                font-size: 13px;
+                font-size: 11px;
             }
 
             .half-block .block-title {
-                font-size: 16px;
+                font-size: 14px;
                 padding-bottom: 4px;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
             }
 
             .half-block {
                 page-break-after: always;
                 border: 1px solid #000;
-                padding: 12px 12px 10px;
+                padding: 8px 8px 6px;
                 margin-bottom: 0;
             }
 
@@ -677,11 +723,16 @@
             }
 
             .info-item .value {
-                border-bottom: 1px solid #000;
-                padding: 0 4px;
+                border: none !important;
+                padding: 0 3px;
+            }
+
+            .banner .btn {
+                display: none !important;
             }
         }
 
+        /* ===== 移动端适配 ===== */
         @media (max-width: 1000px) {
             .container {
                 padding: 16px 12px;
@@ -710,8 +761,8 @@
                 gap: 16px;
             }
             .stamp-box {
-                width: 80px;
-                height: 80px;
+                width: 120px;
+                height: 120px;
             }
             table {
                 font-size: 11px;
@@ -747,24 +798,24 @@
 
         <div class="main-header">
             <h1>产品盘点数据确认单</h1>
-            <div class="sub">—— 逐月消耗 · 到货 · 库存  ——</div> 
+            <div class="sub">—— 逐月消耗 · 到货 · 库存  ——</div>
         </div>
 
         <!-- 工具栏 -->
         <div class="toolbar">
-            <span class="label">📂 数据管理：</span>
-            <button class="btn-sm" @click="exportData">📥 导出数据</button>
-            <button class="btn-sm" @click="fileInputRef.click()">📤 导入数据</button>
+            <span class="label">[表情] 数据管理：</span>
+            <button class="btn-sm" @click="exportData">[表情] 导出数据</button>
+            <button class="btn-sm" @click="fileInputRef.click()">[表情] 导入数据</button>
             <input type="file" class="file-input" accept=".json" ref="fileInputRef" @change="importData" />
-            <button class="btn-sm" @click="openProductManager">📋 管理产品</button>
-            <span class="hint">💡 数据自动保存在浏览器本地 · 导出JSON可永久备份</span>
+            <button class="btn-sm" @click="openProductManager">[表情] 管理产品</button>
+            <span class="hint">[表情] 数据自动保存在浏览器本地 · 导出JSON可永久备份</span>
         </div>
 
         <!-- ===== 产品管理模态框 ===== -->
         <div class="modal-overlay" :class="{ active: showProductManager }" @click.self="closeProductManager">
             <div class="modal-box">
                 <h2>管理产品列表</h2>
-                <p style="font-size:14px;color:#555;margin-bottom:12px;">修改产品名称、添加或删除产品。修改后点击“保存”生效。</p>
+                <p style="font-size:14px;color:#555;margin-bottom:12px;">修改产品名称、添加或删除产品。修改后点击"保存"生效。</p>
                 <div v-for="(item, idx) in editingProducts" :key="idx" class="product-item">
                     <input type="text" v-model="item.name" placeholder="输入产品名称" />
                     <button class="btn-del" @click="removeProduct(idx)" :disabled="editingProducts.length <= 1">删除</button>
@@ -786,15 +837,15 @@
             <div class="info-bar">
                 <div class="info-item">
                     <label>盘点单位</label>
-                    <input type="text" v-model="half1.department" :disabled="half1.submitted" placeholder="填写盘点单位" @input="saveToLocal" />
+                    <input type="text" v-model="half1.department" :disabled="half1.frozen" placeholder="填写盘点单位" @input="saveToLocal" />
                 </div>
                 <div class="info-item">
                     <label>盘点日期</label>
-                    <input type="date" v-model="half1.inventoryDate" :disabled="half1.submitted" @change="saveToLocal" />
+                    <input type="date" v-model="half1.inventoryDate" :disabled="half1.frozen" @change="saveToLocal" />
                 </div>
                 <div class="info-item">
                     <label>半年期</label>
-                    <select v-model="half1.period" :disabled="half1.submitted" @change="saveToLocal">
+                    <select v-model="half1.period" :disabled="half1.frozen" @change="saveToLocal">
                         <option value="2026-01">2026年上半年</option>
                         <option value="2027-01">2027年上半年</option>
                         <option value="2028-01">2028年上半年</option>
@@ -803,7 +854,7 @@
                 <div class="info-item" style="border-left:1px solid #ccc;padding-left:16px;">
                     <label>状态</label>
                     <span style="border-bottom:1px solid #000;padding:4px 12px;font-weight:600;">
-                        {{ half1.submitted ? '已提交' : '待提交' }}
+                        {{ half1.frozen ? '[表情] 已冻结' : '[表情] 可编辑' }}
                     </span>
                 </div>
             </div>
@@ -836,14 +887,14 @@
                             <td class="col-sn">{{ idx + 1 }}</td>
                             <td class="col-name">{{ item.name }}</td>
                             <td class="col-start-stock">
-                                <input type="number" v-model.number="item.startStock" :disabled="half1.submitted" min="0" step="1" @input="onChangeHalf1" />
+                                <input type="number" v-model.number="item.startStock" :disabled="half1.frozen" min="0" step="1" @input="onChangeHalf1" />
                             </td>
                             <template v-for="(month, mIdx) in item.months" :key="mIdx">
                                 <td class="col-input">
-                                    <input type="number" v-model.number="month.consume" :disabled="half1.submitted" min="0" step="1" @input="onChangeHalf1" />
+                                    <input type="number" v-model.number="month.consume" :disabled="half1.frozen" min="0" step="1" @input="onChangeHalf1" />
                                 </td>
                                 <td class="col-input">
-                                    <input type="number" v-model.number="month.arrive" :disabled="half1.submitted" min="0" step="1" @input="onChangeHalf1" />
+                                    <input type="number" v-model.number="month.arrive" :disabled="half1.frozen" min="0" step="1" @input="onChangeHalf1" />
                                 </td>
                                 <td class="col-stock" :style="{background: mIdx === 5 ? '#f6f8fc' : 'transparent', fontWeight: mIdx === 5 ? 700 : 600}">
                                     {{ month.stock }}
@@ -862,19 +913,19 @@
                     <div class="stat">6月末库存总额：<span class="num">{{ half1.totalStock }}</span></div>
                 </div>
                 <div class="actions">
-                    <button class="btn" @click="resetHalf('half1')" :disabled="half1.submitted">重置</button>
-                    <button class="btn btn-primary" @click="submitHalf('half1')" :disabled="half1.submitted">提交审核</button>
+                    <button class="btn" @click="resetHalf('half1')" :disabled="half1.frozen">重置</button>
+                    <button class="btn btn-primary" @click="freezeHalf('half1')" :disabled="half1.frozen">[表情] 冻结数据</button>
                 </div>
             </div>
 
-            <div class="banner banner-success" :class="{ show: half1.submitted && !half1.unlockMode }">
-                <span style="font-weight:700;">✓</span>
-                <span>上半年数据已于 <strong>{{ half1.submitTime }}</strong> 提交，已锁定。</span>
-                <button class="btn btn-warning" @click="enableUnlock('half1')" style="margin-left:auto;">解锁修改</button>
+            <div class="banner banner-success" :class="{ show: half1.frozen && !half1.unlockMode }">
+                <span style="font-weight:700;">[表情]</span>
+                <span>上半年数据已于 <strong>{{ half1.freezeTime }}</strong> 冻结，不可编辑。</span>
+                <button class="btn btn-warning" @click="enableUnlock('half1')" style="margin-left:auto;">[表情] 解锁编辑</button>
             </div>
 
             <div class="banner banner-unlock" :class="{ show: half1.unlockMode }">
-                <span style="font-weight:700;">🔓</span>
+                <span style="font-weight:700;">[表情]</span>
                 <span>输入解锁密码：</span>
                 <input type="password" v-model="half1.unlockPassword" placeholder="密码" style="border:1px solid #000;padding:4px 8px;font-family:inherit;width:120px;" />
                 <button class="btn btn-primary" @click="unlockHalf('half1')">确认</button>
@@ -896,15 +947,15 @@
             <div class="info-bar">
                 <div class="info-item">
                     <label>盘点单位</label>
-                    <input type="text" v-model="half2.department" :disabled="half2.submitted" placeholder="填写盘点单位" @input="saveToLocal" />
+                    <input type="text" v-model="half2.department" :disabled="half2.frozen" placeholder="填写盘点单位" @input="saveToLocal" />
                 </div>
                 <div class="info-item">
                     <label>盘点日期</label>
-                    <input type="date" v-model="half2.inventoryDate" :disabled="half2.submitted" @change="saveToLocal" />
+                    <input type="date" v-model="half2.inventoryDate" :disabled="half2.frozen" @change="saveToLocal" />
                 </div>
                 <div class="info-item">
                     <label>半年期</label>
-                    <select v-model="half2.period" :disabled="half2.submitted" @change="saveToLocal">
+                    <select v-model="half2.period" :disabled="half2.frozen" @change="saveToLocal">
                         <option value="2026-07">2026年下半年</option>
                         <option value="2027-07">2027年下半年</option>
                         <option value="2028-07">2028年下半年</option>
@@ -913,7 +964,7 @@
                 <div class="info-item" style="border-left:1px solid #ccc;padding-left:16px;">
                     <label>状态</label>
                     <span style="border-bottom:1px solid #000;padding:4px 12px;font-weight:600;">
-                        {{ half2.submitted ? '已提交' : '待提交' }}
+                        {{ half2.frozen ? '[表情] 已冻结' : '[表情] 可编辑' }}
                     </span>
                 </div>
             </div>
@@ -946,14 +997,14 @@
                             <td class="col-sn">{{ idx + 1 }}</td>
                             <td class="col-name">{{ item.name }}</td>
                             <td class="col-start-stock">
-                                <input type="number" v-model.number="item.startStock" :disabled="half2.submitted" min="0" step="1" @input="onChangeHalf2" />
+                                <input type="number" v-model.number="item.startStock" :disabled="half2.frozen" min="0" step="1" @input="onChangeHalf2" />
                             </td>
                             <template v-for="(month, mIdx) in item.months" :key="mIdx">
                                 <td class="col-input">
-                                    <input type="number" v-model.number="month.consume" :disabled="half2.submitted" min="0" step="1" @input="onChangeHalf2" />
+                                    <input type="number" v-model.number="month.consume" :disabled="half2.frozen" min="0" step="1" @input="onChangeHalf2" />
                                 </td>
                                 <td class="col-input">
-                                    <input type="number" v-model.number="month.arrive" :disabled="half2.submitted" min="0" step="1" @input="onChangeHalf2" />
+                                    <input type="number" v-model.number="month.arrive" :disabled="half2.frozen" min="0" step="1" @input="onChangeHalf2" />
                                 </td>
                                 <td class="col-stock" :style="{background: mIdx === 5 ? '#f6f8fc' : 'transparent', fontWeight: mIdx === 5 ? 700 : 600}">
                                     {{ month.stock }}
@@ -972,19 +1023,19 @@
                     <div class="stat">12月末库存总额：<span class="num">{{ half2.totalStock }}</span></div>
                 </div>
                 <div class="actions">
-                    <button class="btn" @click="resetHalf('half2')" :disabled="half2.submitted">重置</button>
-                    <button class="btn btn-primary" @click="submitHalf('half2')" :disabled="half2.submitted">提交审核</button>
+                    <button class="btn" @click="resetHalf('half2')" :disabled="half2.frozen">重置</button>
+                    <button class="btn btn-primary" @click="freezeHalf('half2')" :disabled="half2.frozen">[表情] 冻结数据</button>
                 </div>
             </div>
 
-            <div class="banner banner-success" :class="{ show: half2.submitted && !half2.unlockMode }">
-                <span style="font-weight:700;">✓</span>
-                <span>下半年数据已于 <strong>{{ half2.submitTime }}</strong> 提交，已锁定。</span>
-                <button class="btn btn-warning" @click="enableUnlock('half2')" style="margin-left:auto;">解锁修改</button>
+            <div class="banner banner-success" :class="{ show: half2.frozen && !half2.unlockMode }">
+                <span style="font-weight:700;">[表情]</span>
+                <span>下半年数据已于 <strong>{{ half2.freezeTime }}</strong> 冻结，不可编辑。</span>
+                <button class="btn btn-warning" @click="enableUnlock('half2')" style="margin-left:auto;">[表情] 解锁编辑</button>
             </div>
 
             <div class="banner banner-unlock" :class="{ show: half2.unlockMode }">
-                <span style="font-weight:700;">🔓</span>
+                <span style="font-weight:700;">[表情]</span>
                 <span>输入解锁密码：</span>
                 <input type="password" v-model="half2.unlockPassword" placeholder="密码" style="border:1px solid #000;padding:4px 8px;font-family:inherit;width:120px;" />
                 <button class="btn btn-primary" @click="unlockHalf('half2')">确认</button>
@@ -1000,8 +1051,8 @@
         </div>
 
         <!-- ===== 全年汇总 ===== -->
-        <div class="year-summary" v-if="half1.submitted && half2.submitted">
-            <div style="width:100%;font-weight:700;font-size:18px;margin-bottom:6px;">📊 年度汇总（全年）</div>
+        <div class="year-summary" v-if="half1.frozen && half2.frozen">
+            <div style="width:100%;font-weight:700;font-size:18px;margin-bottom:6px;">[表情] 年度汇总（全年）</div>
             <div class="stat">全年总消耗：<span class="num">{{ yearTotalConsume }}</span></div>
             <div class="stat">全年总到货：<span class="num">{{ yearTotalArrive }}</span></div>
             <div class="stat">12月末库存总额：<span class="num">{{ yearEndStock }}</span></div>
@@ -1024,8 +1075,8 @@
             setup() {
                 // ---------- 默认产品列表 ----------
                 const defaultProductNames = [
-                    'щ1',
-                    'щ2'
+                    '产品一',
+                    '产品二'
                 ];
 
                 // ---------- 工具函数：创建半年数据 ----------
@@ -1045,8 +1096,8 @@
                         department: '',
                         inventoryDate: '',
                         period: '',
-                        submitted: false,
-                        submitTime: '',
+                        frozen: false,
+                        freezeTime: '',
                         unlockMode: false,
                         unlockPassword: '',
                         totalConsume: 0,
@@ -1060,9 +1111,8 @@
                 const half2 = ref(createHalfData(defaultProductNames));
                 const fileInputRef = ref(null);
 
-                // 产品管理相关
                 const showProductManager = ref(false);
-                const editingProducts = ref([]); // 临时编辑列表 [{ name: '...' }]
+                const editingProducts = ref([]);
 
                 // ---------- 设置默认日期和半年期 ----------
                 const setDefaultMeta = () => {
@@ -1094,7 +1144,7 @@
                                 const prev = item.months[m - 1];
                                 month.stock = prev.stock + month.arrive - month.consume;
                             }
-                            if (month.stock < 0) month.stock = 0;
+                            // 允许负数，不再强制归零
                         }
                     });
                     updateStats(half);
@@ -1132,16 +1182,16 @@
                             department: half1.value.department,
                             inventoryDate: half1.value.inventoryDate,
                             period: half1.value.period,
-                            submitted: half1.value.submitted,
-                            submitTime: half1.value.submitTime,
+                            frozen: half1.value.frozen,
+                            freezeTime: half1.value.freezeTime,
                         },
                         half2: {
                             products: half2.value.products,
                             department: half2.value.department,
                             inventoryDate: half2.value.inventoryDate,
                             period: half2.value.period,
-                            submitted: half2.value.submitted,
-                            submitTime: half2.value.submitTime,
+                            frozen: half2.value.frozen,
+                            freezeTime: half2.value.freezeTime,
                         }
                     };
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -1169,8 +1219,8 @@
                             half1.value.department = h1.department || '';
                             half1.value.inventoryDate = h1.inventoryDate || '';
                             half1.value.period = h1.period || '';
-                            half1.value.submitted = h1.submitted || false;
-                            half1.value.submitTime = h1.submitTime || '';
+                            half1.value.frozen = h1.frozen || false;
+                            half1.value.freezeTime = h1.freezeTime || '';
                             half1.value.unlockMode = false;
                             half1.value.unlockPassword = '';
                         }
@@ -1191,8 +1241,8 @@
                             half2.value.department = h2.department || '';
                             half2.value.inventoryDate = h2.inventoryDate || '';
                             half2.value.period = h2.period || '';
-                            half2.value.submitted = h2.submitted || false;
-                            half2.value.submitTime = h2.submitTime || '';
+                            half2.value.frozen = h2.frozen || false;
+                            half2.value.freezeTime = h2.freezeTime || '';
                             half2.value.unlockMode = false;
                             half2.value.unlockPassword = '';
                         }
@@ -1208,7 +1258,6 @@
 
                 // ---------- 产品管理功能 ----------
                 const openProductManager = () => {
-                    // 复制当前产品名称列表
                     editingProducts.value = half1.value.products.map(p => ({ name: p.name }));
                     showProductManager.value = true;
                 };
@@ -1226,30 +1275,25 @@
                         alert('至少保留一个产品');
                         return;
                     }
-                    if (!confirm(`确定删除产品“${editingProducts.value[idx].name}”吗？其所有数据将被移除。`)) return;
+                    if (!confirm(`确定删除产品"${editingProducts.value[idx].name}"吗？其所有数据将被移除。`)) return;
                     editingProducts.value.splice(idx, 1);
                 };
 
                 const saveProductChanges = () => {
-                    // 过滤空名称
                     const names = editingProducts.value.map(item => item.name.trim()).filter(name => name !== '');
                     if (names.length === 0) {
                         alert('至少需要一个产品名称');
                         return;
                     }
-                    // 检查重复名称
                     const unique = new Set(names);
                     if (unique.size !== names.length) {
                         alert('产品名称不能重复，请修改');
                         return;
                     }
 
-                    // 构建新旧名称映射，保留数据
                     const oldProducts = half1.value.products;
                     const newProducts = names.map((name, idx) => {
-                        // 如果旧数据存在且索引相同，则保留数据，否则初始化
                         if (idx < oldProducts.length) {
-                            // 名称可能变了，但数据保留
                             return {
                                 id: idx + 1,
                                 name: name,
@@ -1257,7 +1301,6 @@
                                 months: oldProducts[idx].months.map(m => ({ ...m }))
                             };
                         } else {
-                            // 新增产品
                             return {
                                 id: idx + 1,
                                 name: name,
@@ -1266,8 +1309,6 @@
                             };
                         }
                     });
-                    // 如果旧产品比新产品多，舍弃多余
-                    // 更新 half1 和 half2
                     half1.value.products = newProducts.map(p => ({ ...p }));
                     half2.value.products = newProducts.map(p => ({ ...p }));
 
@@ -1289,8 +1330,11 @@
                     const blob = new Blob([raw], { type: 'application/json' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
+                    // 获取盘点单位，如果没填则使用默认值
+                    const dept = half1.value.department || half2.value.department || '默认单位';
+                    const date = new Date().toISOString().slice(0, 10);
                     a.href = url;
-                    a.download = `盘点数据_${new Date().toISOString().slice(0,10)}.json`;
+                    a.download = `盘点数据_${dept}_${date}.json`;
                     a.click();
                     URL.revokeObjectURL(url);
                 };
@@ -1318,10 +1362,10 @@
                     event.target.value = '';
                 };
 
-                // ---------- 提交 / 解锁 / 重置 ----------
-                const submitHalf = (which) => {
+                // ---------- 冻结 / 解锁 / 重置 ----------
+                const freezeHalf = (which) => {
                     const half = which === 'half1' ? half1.value : half2.value;
-                    if (half.submitted) return;
+                    if (half.frozen) return;
                     let hasEmpty = false;
                     half.products.forEach(p => {
                         p.months.forEach(m => {
@@ -1335,14 +1379,15 @@
                         alert('请确保所有月份的消耗和到货数量均已填写！');
                         return;
                     }
-                    if (!confirm(`确认提交${which === 'half1' ? '上半年' : '下半年'}盘点数据吗？提交后将锁定。`)) return;
-                    half.submitted = true;
+                    if (!confirm(`[表情] 确认冻结${which === 'half1' ? '上半年' : '下半年'}数据吗？冻结后将无法编辑，需输入密码解锁。`)) return;
+                    half.frozen = true;
                     const now = new Date();
-                    half.submitTime =
+                    half.freezeTime =
                         `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
                     half.unlockMode = false;
                     half.unlockPassword = '';
                     saveToLocal();
+                    alert(`[表情] ${which === 'half1' ? '上半年' : '下半年'}数据已冻结！如需修改请点击"解锁编辑"并输入密码。`);
                 };
 
                 const enableUnlock = (which) => {
@@ -1361,21 +1406,21 @@
                     const half = which === 'half1' ? half1.value : half2.value;
                     const PASSWORD = 'admin';
                     if (half.unlockPassword === PASSWORD) {
-                        half.submitted = false;
+                        half.frozen = false;
                         half.unlockMode = false;
                         half.unlockPassword = '';
                         saveToLocal();
-                        alert('解锁成功！数据已恢复为可编辑状态。');
+                        alert('[表情] 解锁成功！数据已恢复为可编辑状态。');
                     } else {
-                        alert('密码错误，请重新输入。');
+                        alert('[表情] 密码错误，请重新输入。');
                         half.unlockPassword = '';
                     }
                 };
 
                 const resetHalf = (which) => {
                     const half = which === 'half1' ? half1.value : half2.value;
-                    if (half.submitted) {
-                        if (!confirm(`该半年已提交，重置将丢失所有修改并恢复初始数据，确定吗？`)) return;
+                    if (half.frozen) {
+                        if (!confirm(`该半年已冻结，重置将丢失所有修改并恢复初始数据，确定吗？`)) return;
                     }
                     half.products.forEach(item => {
                         item.startStock = 0;
@@ -1386,8 +1431,8 @@
                         });
                     });
                     recalcHalf(half);
-                    half.submitted = false;
-                    half.submitTime = '';
+                    half.frozen = false;
+                    half.freezeTime = '';
                     half.unlockMode = false;
                     half.unlockPassword = '';
                     saveToLocal();
@@ -1408,8 +1453,8 @@
                     return new Date().getFullYear();
                 });
 
-                // ---------- 联动：上半年提交后更新下半年上期库存 ----------
-                watch(() => half1.value.submitted, (newVal) => {
+                // ---------- 联动：上半年冻结后更新下半年上期库存 ----------
+                watch(() => half1.value.frozen, (newVal) => {
                     if (newVal) {
                         half2.value.products.forEach((item, idx) => {
                             const h1Item = half1.value.products[idx];
@@ -1423,7 +1468,7 @@
                 }, { immediate: true });
 
                 watch(() => half1.value.products, () => {
-                    if (half1.value.submitted) {
+                    if (half1.value.frozen) {
                         half2.value.products.forEach((item, idx) => {
                             const h1Item = half1.value.products[idx];
                             if (h1Item && h1Item.months[5].stock !== undefined) {
@@ -1444,7 +1489,7 @@
                         recalcHalf(half2.value);
                         saveToLocal();
                     }
-                    if (half1.value.submitted) {
+                    if (half1.value.frozen) {
                         half2.value.products.forEach((item, idx) => {
                             const h1Item = half1.value.products[idx];
                             if (h1Item && h1Item.months[5].stock !== undefined) {
@@ -1471,7 +1516,7 @@
                     saveToLocal,
                     exportData,
                     importData,
-                    submitHalf,
+                    freezeHalf,
                     enableUnlock,
                     cancelUnlock,
                     unlockHalf,
