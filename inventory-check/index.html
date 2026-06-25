@@ -803,12 +803,12 @@
 
         <!-- 工具栏 -->
         <div class="toolbar">
-            <span class="label">[表情] 数据管理：</span>
-            <button class="btn-sm" @click="exportData">[表情] 导出数据</button>
-            <button class="btn-sm" @click="fileInputRef.click()">[表情] 导入数据</button>
+            <span class="label">📂 数据管理：</span>
+            <button class="btn-sm" @click="exportData">📥 导出数据</button>
+            <button class="btn-sm" @click="fileInputRef.click()">📤 导入数据</button>
             <input type="file" class="file-input" accept=".json" ref="fileInputRef" @change="importData" />
-            <button class="btn-sm" @click="openProductManager">[表情] 管理产品</button>
-            <span class="hint">[表情] 数据自动保存在浏览器本地 · 导出JSON可永久备份</span>
+            <button class="btn-sm" @click="openProductManager">📋 管理产品</button>
+            <span class="hint">💡 数据自动保存在浏览器本地 · 导出JSON可永久备份</span>
         </div>
 
         <!-- ===== 产品管理模态框 ===== -->
@@ -854,7 +854,7 @@
                 <div class="info-item" style="border-left:1px solid #ccc;padding-left:16px;">
                     <label>状态</label>
                     <span style="border-bottom:1px solid #000;padding:4px 12px;font-weight:600;">
-                        {{ half1.frozen ? '[表情] 已冻结' : '[表情] 可编辑' }}
+                        {{ half1.frozen ? '❄️ 已冻结' : '📝 可编辑' }}
                     </span>
                 </div>
             </div>
@@ -914,18 +914,18 @@
                 </div>
                 <div class="actions">
                     <button class="btn" @click="resetHalf('half1')" :disabled="half1.frozen">重置</button>
-                    <button class="btn btn-primary" @click="freezeHalf('half1')" :disabled="half1.frozen">[表情] 冻结数据</button>
+                    <button class="btn btn-primary" @click="freezeHalf('half1')" :disabled="half1.frozen">❄️ 冻结数据</button>
                 </div>
             </div>
 
             <div class="banner banner-success" :class="{ show: half1.frozen && !half1.unlockMode }">
-                <span style="font-weight:700;">[表情]</span>
+                <span style="font-weight:700;">❄️</span>
                 <span>上半年数据已于 <strong>{{ half1.freezeTime }}</strong> 冻结，不可编辑。</span>
-                <button class="btn btn-warning" @click="enableUnlock('half1')" style="margin-left:auto;">[表情] 解锁编辑</button>
+                <button class="btn btn-warning" @click="enableUnlock('half1')" style="margin-left:auto;">🔓 解锁编辑</button>
             </div>
 
             <div class="banner banner-unlock" :class="{ show: half1.unlockMode }">
-                <span style="font-weight:700;">[表情]</span>
+                <span style="font-weight:700;">🔓</span>
                 <span>输入解锁密码：</span>
                 <input type="password" v-model="half1.unlockPassword" placeholder="密码" style="border:1px solid #000;padding:4px 8px;font-family:inherit;width:120px;" />
                 <button class="btn btn-primary" @click="unlockHalf('half1')">确认</button>
@@ -964,7 +964,7 @@
                 <div class="info-item" style="border-left:1px solid #ccc;padding-left:16px;">
                     <label>状态</label>
                     <span style="border-bottom:1px solid #000;padding:4px 12px;font-weight:600;">
-                        {{ half2.frozen ? '[表情] 已冻结' : '[表情] 可编辑' }}
+                        {{ half2.frozen ? '❄️ 已冻结' : '📝 可编辑' }}
                     </span>
                 </div>
             </div>
@@ -1024,18 +1024,18 @@
                 </div>
                 <div class="actions">
                     <button class="btn" @click="resetHalf('half2')" :disabled="half2.frozen">重置</button>
-                    <button class="btn btn-primary" @click="freezeHalf('half2')" :disabled="half2.frozen">[表情] 冻结数据</button>
+                    <button class="btn btn-primary" @click="freezeHalf('half2')" :disabled="half2.frozen">❄️ 冻结数据</button>
                 </div>
             </div>
 
             <div class="banner banner-success" :class="{ show: half2.frozen && !half2.unlockMode }">
-                <span style="font-weight:700;">[表情]</span>
+                <span style="font-weight:700;">❄️</span>
                 <span>下半年数据已于 <strong>{{ half2.freezeTime }}</strong> 冻结，不可编辑。</span>
-                <button class="btn btn-warning" @click="enableUnlock('half2')" style="margin-left:auto;">[表情] 解锁编辑</button>
+                <button class="btn btn-warning" @click="enableUnlock('half2')" style="margin-left:auto;">🔓 解锁编辑</button>
             </div>
 
             <div class="banner banner-unlock" :class="{ show: half2.unlockMode }">
-                <span style="font-weight:700;">[表情]</span>
+                <span style="font-weight:700;">🔓</span>
                 <span>输入解锁密码：</span>
                 <input type="password" v-model="half2.unlockPassword" placeholder="密码" style="border:1px solid #000;padding:4px 8px;font-family:inherit;width:120px;" />
                 <button class="btn btn-primary" @click="unlockHalf('half2')">确认</button>
@@ -1052,7 +1052,7 @@
 
         <!-- ===== 全年汇总 ===== -->
         <div class="year-summary" v-if="half1.frozen && half2.frozen">
-            <div style="width:100%;font-weight:700;font-size:18px;margin-bottom:6px;">[表情] 年度汇总（全年）</div>
+            <div style="width:100%;font-weight:700;font-size:18px;margin-bottom:6px;">📊 年度汇总（全年）</div>
             <div class="stat">全年总消耗：<span class="num">{{ yearTotalConsume }}</span></div>
             <div class="stat">全年总到货：<span class="num">{{ yearTotalArrive }}</span></div>
             <div class="stat">12月末库存总额：<span class="num">{{ yearEndStock }}</span></div>
@@ -1379,7 +1379,7 @@
                         alert('请确保所有月份的消耗和到货数量均已填写！');
                         return;
                     }
-                    if (!confirm(`[表情] 确认冻结${which === 'half1' ? '上半年' : '下半年'}数据吗？冻结后将无法编辑，需输入密码解锁。`)) return;
+                    if (!confirm(`❄️ 确认冻结${which === 'half1' ? '上半年' : '下半年'}数据吗？冻结后将无法编辑，需输入密码解锁。`)) return;
                     half.frozen = true;
                     const now = new Date();
                     half.freezeTime =
@@ -1387,7 +1387,7 @@
                     half.unlockMode = false;
                     half.unlockPassword = '';
                     saveToLocal();
-                    alert(`[表情] ${which === 'half1' ? '上半年' : '下半年'}数据已冻结！如需修改请点击"解锁编辑"并输入密码。`);
+                    alert(`✅ ${which === 'half1' ? '上半年' : '下半年'}数据已冻结！如需修改请点击"解锁编辑"并输入密码。`);
                 };
 
                 const enableUnlock = (which) => {
@@ -1410,9 +1410,9 @@
                         half.unlockMode = false;
                         half.unlockPassword = '';
                         saveToLocal();
-                        alert('[表情] 解锁成功！数据已恢复为可编辑状态。');
+                        alert('✅ 解锁成功！数据已恢复为可编辑状态。');
                     } else {
-                        alert('[表情] 密码错误，请重新输入。');
+                        alert('❌ 密码错误，请重新输入。');
                         half.unlockPassword = '';
                     }
                 };
