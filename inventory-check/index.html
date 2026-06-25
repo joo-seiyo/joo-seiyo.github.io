@@ -1332,10 +1332,14 @@
                     const a = document.createElement('a');
                     // 获取盘点单位，如果没填则使用默认值
                     const dept = half1.value.department || half2.value.department || '默认单位';
-                    const date = new Date().toISOString().slice(0, 10);
+                    const year = half1.value.period
+                        ? half1.value.period.slice(0, 4)
+                        : new Date().getFullYear();
+                
                     a.href = url;
-                    a.download = `盘点数据_${dept}_${date}.json`;
+                    a.download = `盘点数据_${dept}_${year}.json`;
                     a.click();
+                
                     URL.revokeObjectURL(url);
                 };
 
