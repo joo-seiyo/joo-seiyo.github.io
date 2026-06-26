@@ -730,6 +730,10 @@
             .banner .btn {
                 display: none !important;
             }
+            @media print {
+                .col-sn { display: none; }
+                thead th:first-child { display: none; }
+            }
         }
 
         /* ===== 移动端适配 ===== */
