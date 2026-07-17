@@ -1139,7 +1139,7 @@
                             if (month.consume === undefined || isNaN(month.consume)) month.consume = 0;
                             if (month.arrive === undefined || isNaN(month.arrive)) month.arrive = 0;
                             if (m === 0) {
-                                month.stock = (item.startStock || 0) + month.arrive - month.consume;
+                                month.stock = Math.round((item.startStock || 0) + month.arrive - month.consume);
                             } else {
                                 const prev = item.months[m - 1];
                                 month.stock = prev.stock + month.arrive - month.consume;
